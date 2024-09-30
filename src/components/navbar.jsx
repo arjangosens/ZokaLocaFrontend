@@ -13,7 +13,7 @@ export default function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarToggler">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <Link to={"campsites"} className="nav-link" aria-current="page">Locaties</Link>
+                            <Link to={"campsites"} className="nav-link" aria-current="page">Kamplocaties</Link>
                         </li>
                     </ul>
                 </div>
