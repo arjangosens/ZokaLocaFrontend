@@ -3,14 +3,15 @@ import {Link} from "react-router-dom";
 import PersonLimit from "./person-limit.jsx";
 import CampsitePrice from "./campsite-price.jsx";
 import CampsiteAmenity from "./campsite-amenity.jsx";
+import CampsiteIcon from "./campsite-icon.jsx";
 
 export default function CampsiteCard({campsite}) {
     return (
         <div className="card p-0">
             <div className="card-body p-0">
                 <div className="p-2">
-                    <h5 className="card-title"><i
-                        className={getCampsiteIcon(campsite.campsiteType)}></i> {campsite.name}
+                    <h5 className="card-title">
+                        <CampsiteIcon campsiteType={campsite.campsiteType}/> {campsite.name}
                     </h5>
                     <hr/>
                     <div className="d-flex">
@@ -48,10 +49,11 @@ export default function CampsiteCard({campsite}) {
                                 className="fa-solid fa-right-from-bracket"></i> {campsite.departureTime ? campsite.departureTime : "?"}</span>
                         </div>
                     </div>
-                    <hr />
+                    <hr/>
                     <div className="d-flex flex-wrap">
                         {campsite.facilities.map((facility) => (
-                            <small key={facility.id} className="badge rounded-pill text-bg-secondary me-2 mb-2">{facility.name}</small>
+                            <small key={facility.id}
+                                   className="badge rounded-pill text-bg-secondary me-2 mb-2">{facility.name}</small>
                         ))}
                     </div>
                     <div className="d-grid mt-4">
@@ -61,17 +63,6 @@ export default function CampsiteCard({campsite}) {
             </div>
         </div>
     );
-}
-
-function getCampsiteIcon(campsiteType) {
-    switch (campsiteType) {
-        case "FIELD":
-            return "fa-solid fa-campground";
-        case "BUILDING":
-            return "fa-solid fa-house";
-        default:
-            return "fa-solid fa-question";
-    }
 }
 
 CampsiteCard.propTypes = {

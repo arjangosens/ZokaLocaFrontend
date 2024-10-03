@@ -16,7 +16,8 @@ $theme-colors: (
         'info': $info,
         'warning': $warning,
         'danger': $danger,
-        'dark': $dark
+        'dark': $dark,
+        'light': $light
 );
 
 @import "bootstrap/scss/bootstrap";

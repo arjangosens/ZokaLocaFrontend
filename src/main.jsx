@@ -6,6 +6,7 @@ import './index.scss'
 import * as bootstrap from 'bootstrap'
 import Root from "./routes/root.jsx";
 import CampsiteOverview from "./routes/campsites/campsite-overview.jsx";
+import CampsiteDetails, {loader as campsiteLoader} from "./routes/campsites/campsite-details.jsx";
 
 const router = createBrowserRouter([
     {
@@ -18,7 +19,17 @@ const router = createBrowserRouter([
             },
             {
                 path: "/campsites",
-                element: <CampsiteOverview/>
+                children: [
+                    {
+                        index: true,
+                        element: <CampsiteOverview/>
+                    },
+                    {
+                        path: ":campsiteId",
+                        element: <CampsiteDetails/>,
+                        loader: campsiteLoader
+                    }
+                ]
             }
         ]
     },
