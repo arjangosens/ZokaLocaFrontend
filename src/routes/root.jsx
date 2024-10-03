@@ -5,7 +5,7 @@ export default function Root() {
   return (
       <>
           <Navbar/>
-          <div className="container-fluid">
+          <div className="container">
               <div className="nav-size"></div> {/* Navbar spacer element */}
               <Outlet/>
           </div>
