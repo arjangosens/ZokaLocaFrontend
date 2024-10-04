@@ -6,7 +6,10 @@ import './index.scss'
 import * as bootstrap from 'bootstrap'
 import Root from "./routes/root.jsx";
 import CampsiteOverview from "./routes/campsites/campsite-overview.jsx";
-import CampsiteDetails, {loader as campsiteLoader} from "./routes/campsites/campsite-details.jsx";
+import CampsiteDetails from "./routes/campsites/campsite-details.jsx";
+import {getCampsiteByIdLoader} from "./loaders/campsite-loader.jsx";
+import CreateCampsite from "./routes/campsites/create-campsite.jsx";
+import EditCampsite from "./routes/campsites/edit-campsite.jsx";
 
 const router = createBrowserRouter([
     {
@@ -25,9 +28,23 @@ const router = createBrowserRouter([
                         element: <CampsiteOverview/>
                     },
                     {
+                        path: "create",
+                        element: <CreateCampsite/>,
+                    },
+                    {
                         path: ":campsiteId",
-                        element: <CampsiteDetails/>,
-                        loader: campsiteLoader
+                        children: [
+                            {
+                                index: true,
+                                element: <CampsiteDetails/>,
+                                loader: getCampsiteByIdLoader
+                            },
+                            {
+                                path: "edit",
+                                element: <EditCampsite/>,
+                                loader: getCampsiteByIdLoader
+                            }
+                        ]
                     }
                 ]
             }

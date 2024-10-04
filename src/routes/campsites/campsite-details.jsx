@@ -1,10 +1,9 @@
-import {useEffect, useState} from "react";
-import {backendApi} from "../../utils/backend-api.jsx";
 import {Link, useLoaderData} from "react-router-dom";
 import CampsiteIcon from "../../components/campsites/campsite-icon.jsx";
 import PersonLimit from "../../components/campsites/person-limit.jsx";
 import CampsitePrice from "../../components/campsites/campsite-price.jsx";
 import CampsiteAmenity from "../../components/campsites/campsite-amenity.jsx";
+import EnumUtils from "../../utils/enum-utils.jsx";
 
 function getAddressString(address) {
     let result = "?";
@@ -15,16 +14,6 @@ function getAddressString(address) {
     }
 
     return result;
-}
-
-export async function loader({params}) {
-    try {
-        const response = await backendApi.get(`/campsites/${params.campsiteId}`);
-        return {campsite: response.data};
-    } catch (error) {
-        console.error("Error fetching data: ", error);
-        return {campsite: null};
-    }
 }
 
 export default function CampsiteDetails() {
@@ -152,6 +141,15 @@ export default function CampsiteDetails() {
                                            className="badge rounded-pill text-bg-secondary me-2 mb-2">{facility.name}</small>
                                 ))}
                             </div>
+                        </div>
+                    </div>
+                    <div className="card text-bg-light mb-4">
+                        <div className="card-header">Omgeving</div>
+                        <div className="card-body d-flex flex-column">
+                            {Object.entries(campsite.surroundings).map(([name, proximity]) => (
+                                <span
+                                    key={name}><b>{name}:</b> {EnumUtils.translateSurroundingProximity(proximity)}</span>
+                            ))}
                         </div>
                     </div>
                 </div>
