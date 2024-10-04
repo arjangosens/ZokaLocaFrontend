@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+
 $primary: #622182;
 $secondary: #8CC739;
 $success: #3B472A;
@@ -5,7 +8,7 @@ $info: #217C82;
 $warning: #B9A03C;
 $danger: #B93207;
 $dark: #424043;
-$light: #D9D9D9;
+$light: #eeeeee;
 
 $navbar-height: 3.5rem;
 
@@ -19,6 +22,9 @@ $theme-colors: (
         'dark': $dark,
         'light': $light
 );
+
+$font-family-base: "Source Sans 3", Helvetica, sans-serif;
+$headings-font-family: "Bitter", Georgia, serif;
 
 @import "bootstrap/scss/bootstrap";
 
