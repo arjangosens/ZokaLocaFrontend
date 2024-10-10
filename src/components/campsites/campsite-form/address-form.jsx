@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { useFormContext } from "react-hook-form";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import AddressPropTypes from "../../../domain/prop-types/address.jsx";
 
 export default function AddressForm({ address }) {
     const { register, formState: { errors }, setValue, watch } = useFormContext();
@@ -84,12 +85,25 @@ export default function AddressForm({ address }) {
                 </select>
                 {errors.address?.country && <div className="invalid-feedback">Dit veld is vereist</div>}
             </div>
+            <div className="col-12 mb-3">
+                <label>Afstand vanaf Gilze</label>
+                <div className="input-group">
+                    <input
+                        className={"form-control" + (errors.address?.distanceInKm ? " is-invalid" : "")}
+                        placeholder="Afstand"
+                        type="number"
+                        {...register("address.distanceInKm")}
+                    />
+                    <span className="input-group-text">km</span>
+                </div>
+
+            </div>
         </div>
     );
 }
 
 AddressForm.propTypes = {
-    address: PropTypes.object,
+    address: AddressPropTypes,
     register: PropTypes.func,
     errors: PropTypes.object
 };

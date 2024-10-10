@@ -28,7 +28,7 @@ export default function CampsiteDetails() {
             <div className="row">
                 <div className="col text-center">
                     <div className="nav-size"></div>
-                    <h1><CampsiteIcon campsiteType={campsite.campsiteType}/> {campsite.name}</h1>
+                    <h1 className="page-header-margin"><CampsiteIcon campsiteType={campsite.campsiteType}/> {campsite.name}</h1>
                     <hr/>
                     <div className="d-flex justify-content-between mb-2">
                         <p className="mb-0"><i
@@ -60,6 +60,7 @@ export default function CampsiteDetails() {
                                     <span><b>Postcode:</b> {campsite.address.zipcode ?? "?"}</span>
                                     <span><b>Woonplaats:</b> {campsite.address.city ?? "?"}</span>
                                     <span><b>Land:</b> {campsite.address.country ?? "?"}</span>
+                                    <span><b>Afstand vanaf Gilze:</b> {campsite.address.distanceInKm ?? "?"} km</span>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +79,7 @@ export default function CampsiteDetails() {
                             </div>
                         </div>
                         {/*External sources*/}
-                        {campsite?.externalSources != null &&
+                        {campsite?.externalSources != null && Object.keys(campsite.externalSources).length > 0 &&
                             <div className="col-12 mb-4">
                                 <div className="card text-bg-light ">
                                     <div className="card-header">

@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import PersonLimitPropTypes from "../../domain/prop-types/person-limit.jsx";
 
 export default function PersonLimit({limit}) {
     return (
@@ -11,8 +11,5 @@ export default function PersonLimit({limit}) {
 }
 
 PersonLimit.propTypes = {
-    limit: PropTypes.shape({
-        minimum: PropTypes.number.isRequired,
-        maximum: PropTypes.number.isRequired,
-    }).isRequired,
-};
+    limit: PersonLimitPropTypes.isRequired
+}

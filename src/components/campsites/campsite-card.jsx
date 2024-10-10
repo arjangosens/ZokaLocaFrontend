@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
 import PersonLimit from "./person-limit.jsx";
 import CampsitePrice from "./campsite-price.jsx";
 import CampsiteAmenity from "./campsite-amenity.jsx";
 import CampsiteIcon from "./campsite-icon.jsx";
+import CampsitePropTypes from "../../domain/prop-types/campsite.jsx";
 
 export default function CampsiteCard({campsite}) {
     return (
@@ -66,5 +66,5 @@ export default function CampsiteCard({campsite}) {
 }
 
 CampsiteCard.propTypes = {
-    campsite: PropTypes.object.isRequired
+    campsite: CampsitePropTypes.isRequired
 }

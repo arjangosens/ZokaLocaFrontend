@@ -1,5 +1,5 @@
-import CampsiteType from "../enums/campsite-type.jsx";
-import SurroundingProximity from "../enums/SurroundingProximity.jsx";
+import CampsiteType from "../domain/enums/campsite-type.jsx";
+import SurroundingProximity from "../domain/enums/surrounding-proximity.jsx";
 
 export default class EnumUtils {
     static translateCampsiteType(type) {
