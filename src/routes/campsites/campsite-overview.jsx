@@ -21,18 +21,27 @@ export default function CampsiteOverview() {
         { key: "price.amount", label: "Prijs" }
     ];
 
+    const setSingleSearchParam = (key, value) => {
+        const newParams = new URLSearchParams(searchParams);
+        newParams.set(key, value);
+        setSearchParams(newParams);
+    };
+
     const onSortChanged = (field, order) => {
         setSortField(field);
         setSortOrder(order);
         console.log(`onSortChanged: ${field} - ${order}`);
-        setSearchParams({ page: currentPage, sortBy: field, sortOrder: order });
+        const newParams = new URLSearchParams(searchParams);
+        newParams.set("sortBy", field);
+        newParams.set("sortOrder", order);
+        setSearchParams(newParams);
         fetchCampsites(field, order, currentPage);
     };
 
     const onPaginationChanged = (page) => {
         setCurrentPage(page);
         console.log(`onPaginationChanged: ${page}`);
-        setSearchParams({ page: page, sortBy: sortField, sortOrder: sortOrder });
+        setSingleSearchParam("page", page);
         fetchCampsites(sortField, sortOrder, page);
     }
 
@@ -56,6 +65,7 @@ export default function CampsiteOverview() {
             .catch((error) => {
                 console.error("Error fetching data: ", error);
                 setError(error);
+                setCurrentPage(1);
             }).finally(() => {
             setIsLoading(false);
         });

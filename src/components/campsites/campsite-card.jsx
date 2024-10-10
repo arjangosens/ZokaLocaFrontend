@@ -50,13 +50,13 @@ export default function CampsiteCard({campsite}) {
                         </div>
                     </div>
                     <hr/>
-                    <div className="d-flex flex-wrap">
+                    <div className="facilities-container d-flex flex-wrap align-items-start overflow-auto">
                         {campsite.facilities.map((facility) => (
                             <small key={facility.id}
                                    className="badge rounded-pill text-bg-secondary me-2 mb-2">{facility.name}</small>
                         ))}
                     </div>
-                    <div className="d-grid mt-4">
+                    <div className="d-grid mt-3">
                         <Link to={`/campsites/${campsite.id}`} className="btn btn-primary">Bekijk</Link>
                     </div>
                 </div>
