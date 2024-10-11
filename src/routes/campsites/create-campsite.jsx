@@ -20,10 +20,12 @@ export default function CreateCampsite() {
     }
 
     return (
-        <div className="row">
-            <h1 className="page-header-margin text-center">Locatie toevoegen</h1>
-            <hr />
-            <CampsiteForm onSubmit={handleCreateCampsite}/>
+        <div className="container">
+            <div className="row">
+                <h1 className="page-header-margin text-center">Locatie toevoegen</h1>
+                <hr/>
+                <CampsiteForm onSubmit={handleCreateCampsite}/>
+            </div>
         </div>
     );
 }

@@ -11,9 +11,9 @@ export default function CampsitePrice({price}) {
 function getModeName(priceMode) {
     switch (priceMode) {
         case "CONSTANT":
-            return "per nacht";
+            return "p.n.";
         case "PER_PERSON":
-            return "per persoon";
+            return "p.p.n.";
         default:
             return "onbekend";
     }

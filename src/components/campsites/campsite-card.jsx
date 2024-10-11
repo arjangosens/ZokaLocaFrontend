@@ -10,13 +10,13 @@ export default function CampsiteCard({campsite}) {
         <div className="card p-0">
             <div className="card-body p-0">
                 <div className="p-2">
-                    <h5 className="card-title">
+                    <h5 className="card-title text-truncate">
                         <CampsiteIcon campsiteType={campsite.campsiteType}/> {campsite.name}
                     </h5>
                     <hr/>
                     <div className="d-flex">
-                        <p className="mb-0"><i className="fa-solid fa-city"></i> {campsite.address.city}</p>
-                        <p className="ms-auto mb-0">{campsite.address.distanceInKm} km</p>
+                        <p className="mb-0 text-truncate"><i className="fa-solid fa-city"></i> {campsite.address.city}</p>
+                        <p className="ms-auto mb-0 text-nowrap">{campsite.address.distanceInKm} km</p>
                     </div>
                 </div>
                 <img className="img-fluid" alt="campsite thumbnail" src="https://placehold.co/1920x1080"/>

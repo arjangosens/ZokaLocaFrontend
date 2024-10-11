@@ -22,11 +22,13 @@ export default function EditCampsite() {
     }
 
     return (
-        <div className="row">
-            <h1 className="page-header-margin text-center">Locatie bewerken</h1>
-            <h2 className="text-center"><CampsiteIcon campsiteType={campsite.campsiteType}/> {campsite.name}</h2>
-            <hr/>
-            <CampsiteForm campsite={campsite} onSubmit={handleUpdateCampsite}/>
+        <div className="container">
+            <div className="row">
+                <h1 className="page-header-margin text-center">Locatie bewerken</h1>
+                <h2 className="text-center"><CampsiteIcon campsiteType={campsite.campsiteType}/> {campsite.name}</h2>
+                <hr/>
+                <CampsiteForm campsite={campsite} onSubmit={handleUpdateCampsite}/>
+            </div>
         </div>
     );
 }

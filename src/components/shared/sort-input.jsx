@@ -12,13 +12,13 @@ export default function SortInput({ fields, selectedField, sortOrder, onSortChan
     };
 
     return (
-        <div className="input-group">
+        <div className="input-group input-group-sm">
             <select className="form-select" value={selectedField} onChange={handleFieldChange}>
                 {fields.map((field) => (
                     <option key={field.key} value={field.key}>{field.label}</option>
                 ))}
             </select>
-            <button className="btn btn-outline-dark" onClick={swapSortOrder}>
+            <button className="btn btn-dark" onClick={swapSortOrder}>
                 <i className={`fa-solid ${sortOrder === 'asc' ? 'fa-caret-up' : 'fa-caret-down'}`}></i>
             </button>
         </div>
