@@ -184,7 +184,7 @@ export default function CampsiteOverview() {
                                      clearAllFilters={clearAllFilters}/>
                 </div>
 
-                <div className="col border-start">
+                <div className="col-12 col-xxl-10 border-start">
                     <div className="row">
                         <div className="col text-center">
                             <div className="nav-size"></div>
