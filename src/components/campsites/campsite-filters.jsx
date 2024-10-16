@@ -24,21 +24,16 @@ export default function CampsiteFilters({filters, onFiltersChange}) {
             data.facilityIds = null;
         }
 
-        console.log("Filters submitted");
-        console.log(data);
-
         onFiltersChange(data);
     };
 
     const clearFilters = () => {
-        console.log("Clearing filters");
         setFacilityIds([]);
         onFiltersChange({});
         reset();
     };
 
     const handleFacilityToggled = (facilityId) => {
-        console.log(`Facility toggled: ${facilityId}`);
         const updatedFacilityIds = facilityIds?.includes(facilityId)
             ? facilityIds.filter(id => id !== facilityId)
             : [...(facilityIds || []), facilityId];

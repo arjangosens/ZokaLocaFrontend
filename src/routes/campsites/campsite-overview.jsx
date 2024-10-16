@@ -33,7 +33,6 @@ export default function CampsiteOverview() {
     const onSortChanged = (field, order) => {
         setSortField(field);
         setSortOrder(order);
-        console.log(`onSortChanged: ${field} - ${order}`);
         const newParams = new URLSearchParams(searchParams);
         newParams.set("sortBy", field);
         newParams.set("sortOrder", order);
@@ -43,14 +42,12 @@ export default function CampsiteOverview() {
 
     const onPaginationChanged = (page) => {
         setCurrentPage(page);
-        console.log(`onPaginationChanged: ${page}`);
         setSingleSearchParam("page", page);
         fetchCampsites(sortField, sortOrder, page, filters);
     }
 
     const onFiltersChanged = (filters) => {
         setFilters(filters);
-        console.log(`onFiltersChanged: ${filters}`);
 
         const newParams = new URLSearchParams(searchParams);
         Object.keys(filters).forEach(key => {
