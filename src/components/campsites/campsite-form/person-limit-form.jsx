@@ -1,8 +1,10 @@
 import {useFormContext} from "react-hook-form";
 import {useEffect} from "react";
 import PropTypes from 'prop-types';
+
 export default function PersonLimitForm({personLimit}) {
-    const {register, formState: {errors}, setValue} = useFormContext();
+    const {register, formState: {errors}, setValue, watch} = useFormContext();
+    const maximumValue = watch("personLimit.maximum");
 
     useEffect(() => {
         if (personLimit) {
@@ -11,6 +13,12 @@ export default function PersonLimitForm({personLimit}) {
             });
         }
     }, [personLimit, setValue]);
+
+    useEffect(() => {
+        if (maximumValue === 0) {
+            setValue("personLimit.maximum", "");
+        }
+    }, [maximumValue, setValue]);
 
     return (
         <div className="row">

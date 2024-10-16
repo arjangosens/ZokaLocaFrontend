@@ -26,8 +26,8 @@ export default function CampsiteForm({campsite, onSubmit}) {
                 distanceInKm: 0
             },
             personLimit: {
-                minimum: 0,
-                maximum: 0
+                minimum: 1,
+                maximum: ""
             },
             price: {
                 priceMode: "",
