@@ -1,36 +1,49 @@
 import PropTypes from "prop-types";
 import {useForm} from "react-hook-form";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import FacilityCheckboxes from "./facility-checkboxes.jsx";
 
 export default function CampsiteFilters({filters, onFiltersChange}) {
     const {register, setValue, reset, handleSubmit, formState: {errors}} = useForm();
+    const [facilityIds, setFacilityIds] = useState(filters?.facilityIds ?? []);
 
     useEffect(() => {
         if (filters) {
             Object.keys(filters).forEach(key => {
                 setValue(`${key}`, filters[key]);
             });
+
+            setFacilityIds(filters.facilityIds || []);
         }
     }, [filters, setValue]);
 
     const onSubmit = (data) => {
+        if (facilityIds.length > 0) {
+            data.facilityIds = facilityIds
+        } else {
+            data.facilityIds = null;
+        }
+
         console.log("Filters submitted");
         console.log(data);
+
         onFiltersChange(data);
     };
 
     const clearFilters = () => {
         console.log("Clearing filters");
+        setFacilityIds([]);
         onFiltersChange({});
         reset();
     };
 
     const handleFacilityToggled = (facilityId) => {
-        const updatedFacilityIds = filters?.facilityIds?.includes(facilityId)
-            ? filters.facilityIds.filter(id => id !== facilityId)
-            : [...(filters?.facilityIds || []), facilityId];
-        onFiltersChange({...filters, facilityIds: updatedFacilityIds});
+        console.log(`Facility toggled: ${facilityId}`);
+        const updatedFacilityIds = facilityIds?.includes(facilityId)
+            ? facilityIds.filter(id => id !== facilityId)
+            : [...(facilityIds || []), facilityId];
+
+        setFacilityIds(updatedFacilityIds);
     }
 
     return (
@@ -148,7 +161,7 @@ export default function CampsiteFilters({filters, onFiltersChange}) {
 
             {/* Facilities */}
             <p className="mb-0">Overige voorzieningen:</p>
-            <FacilityCheckboxes onFacilityToggled={handleFacilityToggled} selectedFacilityIds={filters?.facilityIds}/>
+            <FacilityCheckboxes onFacilityToggled={handleFacilityToggled} selectedFacilityIds={facilityIds}/>
 
 
 

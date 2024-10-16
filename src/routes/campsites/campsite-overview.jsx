@@ -74,11 +74,9 @@ export default function CampsiteOverview() {
     };
 
     const clearAllFilters = () => {
-        const newParams = new URLSearchParams(searchParams);
-        newParams.delete("sortBy");
-        newParams.delete("sortOrder");
-        newParams.delete("page");
-        setSearchParams(newParams);
+        setSearchParams(new URLSearchParams());
+        setFilters({});
+        fetchCampsites(sortField, sortOrder, 1, {});
     };
 
     const fetchCampsites = (field, order, currentPage, filters) => {
@@ -89,9 +87,6 @@ export default function CampsiteOverview() {
 
         const actualPage = currentPage - 1;
         const searchParams = new URLSearchParams();
-        searchParams.append("sortBy", field);
-        searchParams.append("sortOrder", order);
-        searchParams.append("page", actualPage);
 
         if (filters !== null && filters !== undefined && Object.keys(filters).length > 0) {
             Object.keys(filters).forEach(key => {
@@ -100,6 +95,23 @@ export default function CampsiteOverview() {
                 }
             });
         }
+
+        const visualSearchParams = new URLSearchParams(searchParams);
+
+        if (field !== "name" || order !== "asc") {
+            visualSearchParams.append("sortBy", field);
+            visualSearchParams.append("sortOrder", order);
+        }
+
+        if (parseInt(currentPage) !== 1) {
+            visualSearchParams.append("page", currentPage);
+        }
+
+        setSearchParams(visualSearchParams);
+
+        searchParams.append("sortBy", field);
+        searchParams.append("sortOrder", order);
+        searchParams.append("page", actualPage);
 
         backendApi.get(`/campsites?${searchParams.toString()}`)
             .then((response) => {
@@ -139,7 +151,8 @@ export default function CampsiteOverview() {
                             aria-label="Close"></button>
                 </div>
                 <div className="offcanvas-body">
-                    <CampsiteFilters filters={filters} onFiltersChange={onFiltersChanged} clearAllFilters={clearAllFilters}/>
+                    <CampsiteFilters filters={filters} onFiltersChange={onFiltersChanged}
+                                     clearAllFilters={clearAllFilters}/>
                 </div>
             </div>
             <div className="toolbar fixed-top d-flex align-items-center">
@@ -167,7 +180,8 @@ export default function CampsiteOverview() {
                 <div className="d-none d-xxl-block col-xxl-2 border-end">
                     <div className="nav-size"></div>
                     <h2 className="page-header-margin ">Filters</h2>
-                    <CampsiteFilters filters={filters} onFiltersChange={onFiltersChanged} clearAllFilters={clearAllFilters}/>
+                    <CampsiteFilters filters={filters} onFiltersChange={onFiltersChanged}
+                                     clearAllFilters={clearAllFilters}/>
                 </div>
 
                 <div className="col border-start">
