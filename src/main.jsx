@@ -10,6 +10,7 @@ import CampsiteDetails from "./routes/campsites/campsite-details.jsx";
 import {getCampsiteByIdLoader} from "./loaders/campsite-loader.jsx";
 import CreateCampsite from "./routes/campsites/create-campsite.jsx";
 import EditCampsite from "./routes/campsites/edit-campsite.jsx";
+import UserOverview from "./routes/users/user-overview.jsx";
 
 const router = createBrowserRouter([
     {
@@ -45,6 +46,15 @@ const router = createBrowserRouter([
                                 loader: getCampsiteByIdLoader
                             }
                         ]
+                    }
+                ]
+            },
+            {
+                path: "/users",
+                children: [
+                    {
+                        index: true,
+                        element: <UserOverview/>
                     }
                 ]
             }

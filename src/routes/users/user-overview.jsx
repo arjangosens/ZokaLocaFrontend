@@ -1,14 +1,14 @@
+import PropTypes from "prop-types";
 import {useEffect, useState} from "react";
-import CampsiteCard from "../../components/campsites/campsite-card.jsx";
 import {Link, useSearchParams} from "react-router-dom";
 import {backendApi} from "../../utils/backend-api.jsx";
 import SortInput from "../../components/shared/sort-input.jsx";
-import Pagination from "../../components/shared/pagination.jsx";
 import FilterButton from "../../components/shared/filter-button.jsx";
-import CampsiteFilters from "../../components/campsites/campsite-filters.jsx";
+import Pagination from "../../components/shared/pagination.jsx";
+import UserFilters from "../../components/users/user-filters.jsx";
 
-export default function CampsiteOverview() {
-    const [campsites, setCampsites] = useState([]);
+export default function UserOverview() {
+    const [users, setUsers] = useState([]);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [searchParams, setSearchParams] = useSearchParams();
@@ -19,9 +19,10 @@ export default function CampsiteOverview() {
     const [filters, setFilters] = useState({});
 
     const sortFields = [
-        {key: "name", label: "Naam"},
-        {key: "address.distanceInKm", label: "Afstand"},
-        {key: "price.amount", label: "Prijs"}
+        {key: "firstName", label: "Voornaam"},
+        {key: "lastName", label: "Achternaam"},
+        {key: "email", label: "E-mailadres"},
+        {key: "role", label: "Rol"}
     ];
 
     const setSingleSearchParam = (key, value) => {
@@ -37,13 +38,13 @@ export default function CampsiteOverview() {
         newParams.set("sortBy", field);
         newParams.set("sortOrder", order);
         setSearchParams(newParams);
-        fetchCampsites(field, order, currentPage, filters);
+        fetchUsers(field, order, currentPage, filters);
     };
 
     const onPaginationChanged = (page) => {
         setCurrentPage(page);
         setSingleSearchParam("page", page);
-        fetchCampsites(sortField, sortOrder, page, filters);
+        fetchUsers(sortField, sortOrder, page, filters);
     }
 
     const onFiltersChanged = (filters) => {
@@ -67,19 +68,19 @@ export default function CampsiteOverview() {
         });
         setSearchParams(newParams);
 
-        fetchCampsites(sortField, sortOrder, currentPage, filters);
+        fetchUsers(sortField, sortOrder, currentPage, filters);
     };
 
     const clearAllFilters = () => {
         setSearchParams(new URLSearchParams());
         setFilters({});
-        fetchCampsites(sortField, sortOrder, 1, {});
+        fetchUsers(sortField, sortOrder, 1, {});
     };
 
-    const fetchCampsites = (field, order, currentPage, filters) => {
+    const fetchUsers = (field, order, currentPage, filters) => {
         setIsLoading(true);
         setError(null);
-        setCampsites([]);
+        setUsers([]);
         setTotalPages(0);
 
         const actualPage = currentPage - 1;
@@ -110,9 +111,9 @@ export default function CampsiteOverview() {
         searchParams.append("sortOrder", order);
         searchParams.append("page", actualPage);
 
-        backendApi.get(`/campsites?${searchParams.toString()}`)
+        backendApi.get(`/users?${searchParams.toString()}`)
             .then((response) => {
-                setCampsites(response.data.content);
+                setUsers(response.data.content);
                 setTotalPages(response.data.totalPages);
             })
             .catch((error) => {
@@ -127,14 +128,10 @@ export default function CampsiteOverview() {
     useEffect(() => {
         const initialFilters = {};
         searchParams.forEach((value, key) => {
-            if (key === "facilityIds") {
-                initialFilters[key] = value.split(",");
-            } else {
-                initialFilters[key] = value;
-            }
+            initialFilters[key] = value;
         });
         setFilters(initialFilters);
-        fetchCampsites(sortField, sortOrder, currentPage, initialFilters);
+        fetchUsers(sortField, sortOrder, currentPage, initialFilters);
     }, []);
 
     return (
@@ -148,8 +145,8 @@ export default function CampsiteOverview() {
                             aria-label="Close"></button>
                 </div>
                 <div className="offcanvas-body">
-                    <CampsiteFilters filters={filters} onFiltersChange={onFiltersChanged}
-                                     clearAllFilters={clearAllFilters}/>
+                    <UserFilters filters={filters} onFiltersChange={onFiltersChanged}
+                                 clearAllFilters={clearAllFilters}></UserFilters>
                 </div>
             </div>
             <div className="toolbar fixed-top d-flex align-items-center">
@@ -167,25 +164,24 @@ export default function CampsiteOverview() {
                     <FilterButton targetId="campsiteFilterOffcanvas" areFiltersActive={false}/>
                 </div>
 
-                <Link to="/campsites/create" className="ms-2 btn btn-sm btn-dark">
+                <Link to="/users/create" className="ms-2 btn btn-sm btn-dark">
                     <i className="fa-solid fa-plus"></i>
                 </Link>
             </div>
-
             <div className="row">
                 {/* Large screen filters */}
                 <div className="d-none d-xxl-block col-xxl-2 border-end">
                     <div className="nav-size"></div>
                     <h2 className="page-header-margin ">Filters</h2>
-                    <CampsiteFilters filters={filters} onFiltersChange={onFiltersChanged}
-                                     clearAllFilters={clearAllFilters}/>
+                    <UserFilters filters={filters} onFiltersChange={onFiltersChanged}
+                                 clearAllFilters={clearAllFilters}></UserFilters>
                 </div>
 
                 <div className="col-12 col-xxl-10 border-start">
                     <div className="row">
                         <div className="col text-center">
                             <div className="nav-size"></div>
-                            <h1 className="page-header-margin">Kamplocaties</h1>
+                            <h1 className="page-header-margin">Gebruikers</h1>
                             <hr/>
                             {totalPages > 1 && (
                                 <div className="d-flex justify-content-center">
@@ -196,18 +192,37 @@ export default function CampsiteOverview() {
                         </div>
                     </div>
                     <div className="row">
-                        {isLoading && <div className="spinner-border mx-auto" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </div>}
-                        {error && <div className="text-center">Error: {error.message}</div>}
-                        {!isLoading && !error && campsites.length === 0 &&
-                            <div className="text-center">Geen kamplocaties gevonden</div>}
+                        <div className="col">
+                            {isLoading && <div className="spinner-border mx-auto" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>}
+                            {error && <div className="text-center">Error: {error.message}</div>}
+                            {!isLoading && !error && users.length === 0 &&
+                                <div className="text-center">Geen gebruikers gevonden</div>}
 
-                        {campsites.map((campsite) => (
-                            <div className="col-6 col-lg-4 col-xl-3 mb-3" key={campsite.id}>
-                                <CampsiteCard campsite={campsite}/>
-                            </div>
-                        ))}
+                            {users.length > 0 && (
+                                <table className="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Voornaam</th>
+                                        <th>Achternaam</th>
+                                        <th>E-mailadres</th>
+                                        <th>Rol</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {users.map((user) => (
+                                        <tr key={user.id}>
+                                            <td>{user.firstName}</td>
+                                            <td>{user.lastName}</td>
+                                            <td>{user.email}</td>
+                                            <td>{user.role}</td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            )}
+                        </div>
                     </div>
                     <div className="row">
                         {totalPages > 1 && (
@@ -222,3 +237,9 @@ export default function CampsiteOverview() {
         </>
     );
 }
+
+UserOverview.propTypes = {
+    filters: PropTypes.object.isRequired,
+    onFiltersChange: PropTypes.func.isRequired,
+    clearAllFilters: PropTypes.func.isRequired
+};
