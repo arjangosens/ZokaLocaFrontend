@@ -11,6 +11,7 @@ import {getCampsiteByIdLoader} from "./loaders/campsite-loader.jsx";
 import CreateCampsite from "./routes/campsites/create-campsite.jsx";
 import EditCampsite from "./routes/campsites/edit-campsite.jsx";
 import UserOverview from "./routes/users/user-overview.jsx";
+import RegisterUser from "./routes/users/register-user.jsx";
 
 const router = createBrowserRouter([
     {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
                     {
                         index: true,
                         element: <UserOverview/>
+                    },
+                    {
+                        path: "register",
+                        element: <RegisterUser/>
                     }
                 ]
             }

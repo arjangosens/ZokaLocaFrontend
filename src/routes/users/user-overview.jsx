@@ -77,6 +77,17 @@ export default function UserOverview() {
         fetchUsers(sortField, sortOrder, 1, {});
     };
 
+    const getRoleName = (role) => {
+        switch (role) {
+            case "VOLUNTEER":
+                return "Vrijwilliger";
+            case "ADMIN":
+                return "Administrator";
+            default:
+                return "Onbekend";
+        }
+    }
+
     const fetchUsers = (field, order, currentPage, filters) => {
         setIsLoading(true);
         setError(null);
@@ -164,7 +175,7 @@ export default function UserOverview() {
                     <FilterButton targetId="campsiteFilterOffcanvas" areFiltersActive={false}/>
                 </div>
 
-                <Link to="/users/create" className="ms-2 btn btn-sm btn-dark">
+                <Link to="/users/register" className="ms-2 btn btn-sm btn-dark">
                     <i className="fa-solid fa-plus"></i>
                 </Link>
             </div>
@@ -216,7 +227,7 @@ export default function UserOverview() {
                                             <td>{user.firstName}</td>
                                             <td>{user.lastName}</td>
                                             <td>{user.email}</td>
-                                            <td>{user.role}</td>
+                                            <td>{getRoleName(user.role)}</td>
                                         </tr>
                                     ))}
                                     </tbody>
