@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import {useEffect, useState} from "react";
 import {Link, useSearchParams} from "react-router-dom";
 import {backendApi} from "../../utils/backend-api.jsx";
@@ -219,6 +218,7 @@ export default function UserOverview() {
                                         <th>Achternaam</th>
                                         <th>E-mailadres</th>
                                         <th>Rol</th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -228,6 +228,11 @@ export default function UserOverview() {
                                             <td>{user.lastName}</td>
                                             <td>{user.email}</td>
                                             <td>{getRoleName(user.role)}</td>
+                                            <td>
+                                                <Link to={`/users/${user.id}/edit`} className="btn btn-outline-dark btn-sm">
+                                                    <i className="fa-solid fa-pencil"></i>
+                                                </Link>
+                                            </td>
                                         </tr>
                                     ))}
                                     </tbody>
@@ -248,9 +253,3 @@ export default function UserOverview() {
         </>
     );
 }
-
-UserOverview.propTypes = {
-    filters: PropTypes.object.isRequired,
-    onFiltersChange: PropTypes.func.isRequired,
-    clearAllFilters: PropTypes.func.isRequired
-};

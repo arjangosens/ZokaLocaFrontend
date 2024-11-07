@@ -26,8 +26,11 @@ export default function MultiBranchTypeahead({initialSelectedBranches = [], onSe
     };
 
     const handleBranchSelection = (selected) => {
-        setSelectedBranches(selected);
-        onSelectedBranchesChange(selected);
+        const uniqueSelected = selected.filter((branch, index, self) =>
+            index === self.findIndex((b) => b.id === branch.id)
+        );
+        setSelectedBranches(uniqueSelected);
+        onSelectedBranchesChange(uniqueSelected);
     };
 
     const filterBy = () => true;

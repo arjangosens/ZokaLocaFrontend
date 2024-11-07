@@ -12,6 +12,8 @@ import CreateCampsite from "./routes/campsites/create-campsite.jsx";
 import EditCampsite from "./routes/campsites/edit-campsite.jsx";
 import UserOverview from "./routes/users/user-overview.jsx";
 import RegisterUser from "./routes/users/register-user.jsx";
+import EditUser from "./routes/users/edit-user.jsx";
+import {getUserByIdLoader} from "./loaders/user-loader.jsx";
 
 const router = createBrowserRouter([
     {
@@ -60,6 +62,16 @@ const router = createBrowserRouter([
                     {
                         path: "register",
                         element: <RegisterUser/>
+                    },
+                    {
+                        path: ":userId",
+                        children: [
+                            {
+                                path: "edit",
+                                element: <EditUser/>,
+                                loader: getUserByIdLoader
+                            }
+                        ]
                     }
                 ]
             }
