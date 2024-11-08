@@ -12,7 +12,7 @@ export default function UserOverview() {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [searchParams, setSearchParams] = useSearchParams();
-    const [sortField, setSortField] = useState(searchParams.get("sortBy") || "name");
+    const [sortField, setSortField] = useState(searchParams.get("sortBy") || "firstName");
     const [sortOrder, setSortOrder] = useState(searchParams.get("sortOrder") || "asc");
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(searchParams.get("page") || "1");
@@ -121,7 +121,7 @@ export default function UserOverview() {
 
         const visualSearchParams = new URLSearchParams(searchParams);
 
-        if (field !== "name" || order !== "asc") {
+        if (field !== "firstName" || order !== "asc") {
             visualSearchParams.append("sortBy", field);
             visualSearchParams.append("sortOrder", order);
         }
@@ -218,8 +218,10 @@ export default function UserOverview() {
                     </div>
                     <div className="row">
                         <div className="col">
-                            {isLoading && <div className="spinner-border mx-auto" role="status">
-                                <span className="visually-hidden">Loading...</span>
+                            {isLoading && <div className="text-center">
+                                <div className="spinner-border" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </div>
                             </div>}
                             {error && <div className="text-center">Error: {error.message}</div>}
                             {!isLoading && !error && users.length === 0 &&
