@@ -14,6 +14,7 @@ import UserOverview from "./routes/users/user-overview.jsx";
 import RegisterUser from "./routes/users/register-user.jsx";
 import EditUser from "./routes/users/edit-user.jsx";
 import {getUserByIdLoader} from "./loaders/user-loader.jsx";
+import UserDetails from "./routes/users/user-details.jsx";
 
 const router = createBrowserRouter([
     {
@@ -66,6 +67,11 @@ const router = createBrowserRouter([
                     {
                         path: ":userId",
                         children: [
+                            {
+                                index: true,
+                                element: <UserDetails/>,
+                                loader: getUserByIdLoader
+                            },
                             {
                                 path: "edit",
                                 element: <EditUser/>,

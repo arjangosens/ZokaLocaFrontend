@@ -3,6 +3,7 @@ import {useForm} from "react-hook-form";
 import {useState} from "react";
 import {backendApi} from "../../utils/backend-api.jsx";
 import MultiBranchTypeahead from "../../components/branches/multi-branch-typeahead.jsx";
+import UserRole from "../../domain/enums/user-role.jsx";
 
 export default function EditUser() {
     const {user} = useLoaderData();
@@ -23,7 +24,7 @@ export default function EditUser() {
 
         try {
             await backendApi.put(`/users/${user.id}`, completeFormData);
-            navigate(`/users`);
+            navigate(`/users/${user.id}`);
         } catch (error) {
             console.error("Failed to update user: ", error);
             if (error.response.status === 409) {
@@ -62,8 +63,8 @@ export default function EditUser() {
                             disabled={isSubmitProcessing}
                         >
                             <option value="">Selecteer...</option>
-                            <option value="VOLUNTEER">Vrijwilliger</option>
-                            <option value="ADMIN">Administrator</option>
+                            <option value={UserRole.VOLUNTEER}>Vrijwilliger</option>
+                            <option value={UserRole.ADMIN}>Administrator</option>
                         </select>
                         {errors.role && <div className="invalid-feedback">{errors.role.message}</div>}
                     </div>

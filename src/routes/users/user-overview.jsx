@@ -5,7 +5,7 @@ import SortInput from "../../components/shared/sort-input.jsx";
 import FilterButton from "../../components/shared/filter-button.jsx";
 import Pagination from "../../components/shared/pagination.jsx";
 import UserFilters from "../../components/users/user-filters.jsx";
-import DeleteUserModal from "../../components/users/delete-user-modal.jsx";
+import EnumUtils from "../../utils/enum-utils.jsx";
 
 export default function UserOverview() {
     const [users, setUsers] = useState([]);
@@ -17,7 +17,6 @@ export default function UserOverview() {
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(searchParams.get("page") || "1");
     const [filters, setFilters] = useState({});
-    const [selectedUser, setSelectedUser] = useState(null);
 
     const sortFields = [
         {key: "firstName", label: "Voornaam"},
@@ -31,19 +30,6 @@ export default function UserOverview() {
         newParams.set(key, value);
         setSearchParams(newParams);
     };
-
-    const handleUsersChanged = () => {
-        setSelectedUser(null);
-        fetchUsers(sortField, sortOrder, currentPage, filters);
-    }
-
-    const handleModalClosed = () => {
-        setSelectedUser(null);
-    };
-
-    const handleEditBtnClicked = (user) => {
-        setSelectedUser(user);
-    }
 
     const onSortChanged = (field, order) => {
         setSortField(field);
@@ -89,17 +75,6 @@ export default function UserOverview() {
         setSearchParams(new URLSearchParams());
         setFilters({});
         fetchUsers(sortField, sortOrder, 1, {});
-    };
-
-    const getRoleName = (role) => {
-        switch (role) {
-            case "VOLUNTEER":
-                return "Vrijwilliger";
-            case "ADMIN":
-                return "Administrator";
-            default:
-                return "Onbekend";
-        }
     };
 
     const fetchUsers = (field, order, currentPage, filters) => {
@@ -244,16 +219,13 @@ export default function UserOverview() {
                                             <td>{user.firstName}</td>
                                             <td>{user.lastName}</td>
                                             <td>{user.email}</td>
-                                            <td>{getRoleName(user.role)}</td>
+                                            <td>{EnumUtils.translateUserRole(user.role)}</td>
                                             <td>
                                                 <div className="d-flex">
-                                                    <Link to={`/users/${user.id}/edit`}
+                                                    <Link to={`/users/${user.id}`}
                                                           className="btn btn-outline-dark btn-sm">
-                                                        <i className="fa-solid fa-pencil"></i>
+                                                        <i className="fa-solid fa-arrow-right"></i>
                                                     </Link>
-                                                    <button className="btn btn-outline-danger btn-sm ms-2"
-                                                            onClick={() => handleEditBtnClicked(user)}>
-                                                        <i className="fa-solid fa-trash"></i></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -273,8 +245,6 @@ export default function UserOverview() {
                     </div>
                 </div>
             </div>
-            {selectedUser && <DeleteUserModal user={selectedUser} isShown={true} onClose={handleModalClosed}
-                                              onUserDeleted={handleUsersChanged}/>}
         </>
     );
 }

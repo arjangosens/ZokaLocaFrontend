@@ -3,6 +3,7 @@ import {useState} from "react";
 import MultiBranchTypeahead from "../../components/branches/multi-branch-typeahead.jsx";
 import {backendApi} from "../../utils/backend-api.jsx";
 import {useNavigate} from "react-router-dom";
+import UserRole from "../../domain/enums/user-role.jsx";
 
 export default function RegisterUser() {
     const navigate = useNavigate();
@@ -141,8 +142,8 @@ export default function RegisterUser() {
                             disabled={isSubmitProcessing}
                         >
                             <option value="">Selecteer...</option>
-                            <option value="VOLUNTEER">Vrijwilliger</option>
-                            <option value="ADMIN">Administrator</option>
+                            <option value={UserRole.VOLUNTEER}>Vrijwilliger</option>
+                            <option value={UserRole.ADMIN}>Administrator</option>
                         </select>
                         {errors.role && <div className="invalid-feedback">{errors.role.message}</div>}
                     </div>
