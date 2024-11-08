@@ -13,7 +13,7 @@ export default function EditUser() {
     });
 
     const [errMsg, setErrMsg] = useState('');
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({ branchIds: user.branches.map(branch => branch.id) });
     const [isSubmitProcessing, setIsSubmitProcessing] = useState(false);
 
     const handleUpdateUser = async (value) => {

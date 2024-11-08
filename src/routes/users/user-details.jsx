@@ -2,6 +2,7 @@ import {Link, useLoaderData, useNavigate} from "react-router-dom";
 import DeleteUserModal from "../../components/users/delete-user-modal.jsx";
 import {useState} from "react";
 import EnumUtils from "../../utils/enum-utils.jsx";
+import PropTypes from "prop-types";
 
 export default function UserDetails() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -76,4 +77,18 @@ export default function UserDetails() {
                                                  onUserDeleted={handleUserDeleted}/>}
         </>
     );
+}
+
+UserDetails.propTypes = {
+    user: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        firstName: PropTypes.string.isRequired,
+        lastName: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired,
+        role: PropTypes.string.isRequired,
+        branches: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired
+        }))
+    })
 }
