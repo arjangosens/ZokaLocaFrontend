@@ -15,6 +15,7 @@ import RegisterUser from "./routes/users/register-user.jsx";
 import EditUser from "./routes/users/edit-user.jsx";
 import {getUserByIdLoader} from "./loaders/user-loader.jsx";
 import UserDetails from "./routes/users/user-details.jsx";
+import BranchOverview from "./routes/branches/branch-overview.jsx";
 
 const router = createBrowserRouter([
     {
@@ -80,6 +81,13 @@ const router = createBrowserRouter([
                         ]
                     }
                 ]
+            },
+            {
+                path: "/branches",
+                children: [{
+                    index: true,
+                    element: <BranchOverview/>
+                }]
             }
         ]
     },
