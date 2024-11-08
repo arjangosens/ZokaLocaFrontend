@@ -5,6 +5,7 @@ import SortInput from "../../components/shared/sort-input.jsx";
 import FilterButton from "../../components/shared/filter-button.jsx";
 import Pagination from "../../components/shared/pagination.jsx";
 import BranchFilters from "../../components/branches/branch-filters.jsx";
+import CreateBranchModal from "../../components/branches/create-branch-modal.jsx";
 
 export default function BranchOverview() {
     const [branches, setBranches] = useState([]);
@@ -16,6 +17,7 @@ export default function BranchOverview() {
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(searchParams.get("page") || "1");
     const [filters, setFilters] = useState({});
+    const [showCreateModal, setShowCreateModal] = useState(false);
 
     const sortFields = [
         {key: "name", label: "Naam"}
@@ -72,6 +74,19 @@ export default function BranchOverview() {
         setFilters({});
         fetchBranches(sortField, sortOrder, 1, {});
     };
+
+    const handleCreateBtnClicked = () => {
+        setShowCreateModal(true);
+    }
+
+    const handleModalClosed = () => {
+        setShowCreateModal(false);
+    }
+
+    const handleBranchCreated = () => {
+        setShowCreateModal(false);
+        fetchBranches(sortField, sortOrder, currentPage, filters);
+    }
 
     const fetchBranches = (field, order, currentPage, filters) => {
         setIsLoading(true);
@@ -158,9 +173,9 @@ export default function BranchOverview() {
                     <FilterButton targetId="campsiteFilterOffcanvas" areFiltersActive={false}/>
                 </div>
 
-                <Link to="/branches/create" className="ms-2 btn btn-sm btn-dark">
+                <button className="ms-2 btn btn-sm btn-dark" onClick={handleCreateBtnClicked}>
                     <i className="fa-solid fa-plus"></i>
-                </Link>
+                </button>
             </div>
             <div className="row">
                 {/* Large screen filters */}
@@ -215,6 +230,7 @@ export default function BranchOverview() {
                     </div>
                 </div>
             </div>
+            {showCreateModal && <CreateBranchModal isShown={showCreateModal} onClose={handleModalClosed} onBranchCreated={handleBranchCreated}/>}
         </>
     );
 }

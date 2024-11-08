@@ -19,10 +19,6 @@ export default function DeleteUserModal({user, isShown, onClose, onUserDeleted})
             }
         } catch (err) {
             setError(err.message);
-
-            if (err.response?.status === 401) {
-                window.location.href = "/login";
-            }
         } finally {
             setLoading(false);
         }
