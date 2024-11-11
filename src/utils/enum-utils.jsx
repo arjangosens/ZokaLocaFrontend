@@ -1,5 +1,6 @@
 import CampsiteType from "../domain/enums/campsite-type.jsx";
 import SurroundingProximity from "../domain/enums/surrounding-proximity.jsx";
+import UserRole from "../domain/enums/user-role.jsx";
 
 export default class EnumUtils {
     static translateCampsiteType(type) {
@@ -23,6 +24,17 @@ export default class EnumUtils {
                 return "Loopafstand";
             case SurroundingProximity.CYCLING_DISTANCE:
                 return "Fietsafstand";
+            default:
+                return "Onbekend";
+        }
+    }
+
+    static translateUserRole(role) {
+        switch (role) {
+            case UserRole.ADMIN:
+                return "Administrator";
+            case UserRole.VOLUNTEER:
+                return "Vrijwilliger";
             default:
                 return "Onbekend";
         }
