@@ -19,18 +19,51 @@ import BranchOverview from "./routes/branches/branch-overview.jsx";
 import BranchDetails from "./routes/branches/branch-details.jsx";
 import {getBranchByIdLoader} from "./loaders/branch-loader.jsx";
 import EditBranch from "./routes/branches/edit-branch.jsx";
+import AuthProvider from "./providers/auth-provider.jsx";
+import ProtectedRoute from "./components/protected-route.jsx";
+import Login from "./routes/auth/login.jsx";
+import Logout from "./routes/auth/logout.jsx";
 
 const router = createBrowserRouter([
     {
-        path: "/",
         element: <Root/>,
         children: [
             {
-                index: true,
-                element: <CampsiteOverview/>
+                path: "/",
+                element: <ProtectedRoute/>,
+                children: [
+                    {
+                        index: true,
+                        element: <CampsiteOverview/>
+                    }
+                ]
+            },
+            {
+                path: "/auth",
+                children: [
+                    {
+                        path: "login",
+                        element: <Login/>
+                    },
+                    {
+                        path: "logout",
+                        element: <Logout/>
+                    }
+                ]
+
+            },
+            {
+                path: "/errors",
+                children: [
+                    {
+                        path: "forbidden",
+                        element: <div>Forbidden</div>
+                    }
+                ]
             },
             {
                 path: "/campsites",
+                element: <ProtectedRoute/>,
                 children: [
                     {
                         index: true,
@@ -59,6 +92,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/users",
+                element: <ProtectedRoute/>,
                 children: [
                     {
                         index: true,
@@ -87,6 +121,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/branches",
+                element: <ProtectedRoute/>,
                 children: [
                     {
                         index: true,
@@ -115,6 +150,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
-        <RouterProvider router={router}/>
+        <AuthProvider>
+            <RouterProvider router={router}/>
+        </AuthProvider>
     </StrictMode>,
 )

@@ -6,6 +6,7 @@ import FilterButton from "../../components/shared/filter-button.jsx";
 import Pagination from "../../components/shared/pagination.jsx";
 import UserFilters from "../../components/users/user-filters.jsx";
 import EnumUtils from "../../utils/enum-utils.jsx";
+import {useAuth} from "../../providers/auth-provider.jsx";
 
 export default function UserOverview() {
     const [users, setUsers] = useState([]);
@@ -17,6 +18,7 @@ export default function UserOverview() {
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(searchParams.get("page") || "1");
     const [filters, setFilters] = useState({});
+    const {loggedInUser} = useAuth();
 
     const sortFields = [
         {key: "firstName", label: "Voornaam"},
@@ -126,13 +128,15 @@ export default function UserOverview() {
     };
 
     useEffect(() => {
+        if (loggedInUser) {
         const initialFilters = {};
         searchParams.forEach((value, key) => {
             initialFilters[key] = value;
         });
         setFilters(initialFilters);
         fetchUsers(sortField, sortOrder, currentPage, initialFilters);
-    }, []);
+        }
+    }, [loggedInUser]);
 
     return (
         <>
