@@ -23,6 +23,7 @@ import AuthProvider from "./providers/auth-provider.jsx";
 import ProtectedRoute from "./components/protected-route.jsx";
 import Login from "./routes/auth/login.jsx";
 import Logout from "./routes/auth/logout.jsx";
+import UserRole from "./domain/enums/user-role.jsx";
 
 const router = createBrowserRouter([
     {
@@ -92,7 +93,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/users",
-                element: <ProtectedRoute/>,
+                element: <ProtectedRoute roles={[UserRole.ADMIN]} />,
                 children: [
                     {
                         index: true,
@@ -121,7 +122,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/branches",
-                element: <ProtectedRoute/>,
+                element: <ProtectedRoute roles={[UserRole.ADMIN]}/>,
                 children: [
                     {
                         index: true,

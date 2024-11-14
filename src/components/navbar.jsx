@@ -1,5 +1,6 @@
 import {Link} from "react-router-dom";
 import {useAuth} from "../providers/auth-provider.jsx";
+import UserRole from "../domain/enums/user-role.jsx";
 
 export default function Navbar() {
     const {loggedInUser} = useAuth();
@@ -20,12 +21,16 @@ export default function Navbar() {
                                 <li className="nav-item">
                                     <Link to={"campsites"} className="nav-link" aria-current="page">Kamplocaties</Link>
                                 </li>
-                                <li className="nav-item">
-                                    <Link to={"users"} className="nav-link">Gebruikers</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link to={"branches"} className="nav-link">Speltakken</Link>
-                                </li>
+                                {loggedInUser.role === UserRole.ADMIN && (
+                                    <>
+                                        <li className="nav-item">
+                                            <Link to={"users"} className="nav-link">Gebruikers</Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link to={"branches"} className="nav-link">Speltakken</Link>
+                                        </li>
+                                    </>
+                                )}
                             </ul>
                             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                                 <li className="nav-item dropdown">
