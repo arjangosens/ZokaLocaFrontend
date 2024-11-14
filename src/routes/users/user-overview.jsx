@@ -129,12 +129,12 @@ export default function UserOverview() {
 
     useEffect(() => {
         if (loggedInUser) {
-        const initialFilters = {};
-        searchParams.forEach((value, key) => {
-            initialFilters[key] = value;
-        });
-        setFilters(initialFilters);
-        fetchUsers(sortField, sortOrder, currentPage, initialFilters);
+            const initialFilters = {};
+            searchParams.forEach((value, key) => {
+                initialFilters[key] = value;
+            });
+            setFilters(initialFilters);
+            fetchUsers(sortField, sortOrder, currentPage, initialFilters);
         }
     }, [loggedInUser]);
 

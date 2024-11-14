@@ -6,6 +6,7 @@ import FilterButton from "../../components/shared/filter-button.jsx";
 import Pagination from "../../components/shared/pagination.jsx";
 import BranchFilters from "../../components/branches/branch-filters.jsx";
 import CreateBranchModal from "../../components/branches/create-branch-modal.jsx";
+import {useAuth} from "../../providers/auth-provider.jsx";
 
 export default function BranchOverview() {
     const [branches, setBranches] = useState([]);
@@ -18,6 +19,7 @@ export default function BranchOverview() {
     const [currentPage, setCurrentPage] = useState(searchParams.get("page") || "1");
     const [filters, setFilters] = useState({});
     const [showCreateModal, setShowCreateModal] = useState(false);
+    const {loggedInUser} = useAuth();
 
     const sortFields = [
         {key: "name", label: "Naam"}
@@ -137,13 +139,15 @@ export default function BranchOverview() {
     }
 
     useEffect(() => {
-        const initialFilters = {};
-        searchParams.forEach((value, key) => {
-            initialFilters[key] = value;
-        });
-        setFilters(initialFilters);
-        fetchBranches(sortField, sortOrder, currentPage, initialFilters);
-    }, []);
+        if (loggedInUser) {
+            const initialFilters = {};
+            searchParams.forEach((value, key) => {
+                initialFilters[key] = value;
+            });
+            setFilters(initialFilters);
+            fetchBranches(sortField, sortOrder, currentPage, initialFilters);
+        }
+    }, [loggedInUser]);
     return (
         <>
             {/* Filter offcanvas */}

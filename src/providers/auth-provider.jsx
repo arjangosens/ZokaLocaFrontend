@@ -34,7 +34,7 @@ export default function AuthProvider({children}) {
             setLoggedInUser(null);
             localStorage.removeItem("loggedInUser");
         }
-    }, [token, loggedInUser]);
+    }, [token]);
 
     const contextValue = useMemo(() => ({
         token,

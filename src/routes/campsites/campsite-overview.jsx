@@ -6,6 +6,7 @@ import SortInput from "../../components/shared/sort-input.jsx";
 import Pagination from "../../components/shared/pagination.jsx";
 import FilterButton from "../../components/shared/filter-button.jsx";
 import CampsiteFilters from "../../components/campsites/campsite-filters.jsx";
+import {useAuth} from "../../providers/auth-provider.jsx";
 
 export default function CampsiteOverview() {
     const [campsites, setCampsites] = useState([]);
@@ -17,6 +18,7 @@ export default function CampsiteOverview() {
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(searchParams.get("page") || "1");
     const [filters, setFilters] = useState({});
+    const {loggedInUser} = useAuth();
 
     const sortFields = [
         {key: "name", label: "Naam"},
@@ -125,17 +127,19 @@ export default function CampsiteOverview() {
     };
 
     useEffect(() => {
-        const initialFilters = {};
-        searchParams.forEach((value, key) => {
-            if (key === "facilityIds") {
-                initialFilters[key] = value.split(",");
-            } else {
-                initialFilters[key] = value;
-            }
-        });
-        setFilters(initialFilters);
-        fetchCampsites(sortField, sortOrder, currentPage, initialFilters);
-    }, []);
+        if (loggedInUser) {
+            const initialFilters = {};
+            searchParams.forEach((value, key) => {
+                if (key === "facilityIds") {
+                    initialFilters[key] = value.split(",");
+                } else {
+                    initialFilters[key] = value;
+                }
+            });
+            setFilters(initialFilters);
+            fetchCampsites(sortField, sortOrder, currentPage, initialFilters);
+        }
+    }, [loggedInUser]);
 
     return (
         <>
