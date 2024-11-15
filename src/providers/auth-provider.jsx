@@ -1,5 +1,6 @@
 import {createContext, useContext, useEffect, useMemo, useState} from "react";
 import PropTypes from "prop-types";
+import {jwtDecode} from "jwt-decode";
 import {backendApi} from "../utils/backend-api.jsx";
 
 const AuthContext = createContext(null);
