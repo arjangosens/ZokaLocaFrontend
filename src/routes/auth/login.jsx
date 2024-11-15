@@ -17,7 +17,6 @@ export default function Login() {
     const handleLogin = async (value) => {
         setIsSubmitProcessing(true);
         setErrMsg("");
-        console.log("Login: ", value);
 
         try {
             const response = await backendApi.post("/auth/login", value);
@@ -26,7 +25,7 @@ export default function Login() {
             navigate("/campsites");
         } catch (error) {
             console.error("Failed to log in: ", error);
-            if (error.response.status === 403) {
+            if (error?.response?.status === 403) {
                 setErrMsg("Ongeldig e-mailadres en/of wachtwoord");
             } else {
                 setErrMsg("Er ging iets fout. Probeer het later opnieuw.");
