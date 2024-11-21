@@ -4,6 +4,9 @@ import PersonLimit from "../../components/campsites/person-limit.jsx";
 import CampsitePrice from "../../components/campsites/campsite-price.jsx";
 import CampsiteAmenity from "../../components/campsites/campsite-amenity.jsx";
 import EnumUtils from "../../utils/enum-utils.jsx";
+import {useEffect, useState} from "react";
+import {backendApi} from "../../utils/backend-api.jsx";
+import VisitCard from "../../components/visits/visit-card.jsx";
 
 function getAddressString(address) {
     let result = "?";
@@ -18,6 +21,40 @@ function getAddressString(address) {
 
 export default function CampsiteDetails() {
     const {campsite} = useLoaderData();
+    const [visits, setVisits] = useState([]);
+    const [visitsError, setVisitsError] = useState(null);
+    const [isVisitsLoading, setIsVisitsLoading] = useState(true);
+
+    const getVisits = async () => {
+        setVisits([]);
+        setVisitsError(null);
+        setIsVisitsLoading(true);
+
+        try {
+            const response = await backendApi.get(`/visits/campsite/${campsite.id}`);
+            setVisits(response.data);
+
+            if ((response?.data?.length ?? 0) === 0) {
+                setVisitsError("Geen bezoeken gevonden");
+            }
+
+        } catch (error) {
+            console.error("Error fetching visits: ", error);
+            setVisitsError(error.message);
+        } finally {
+            setIsVisitsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (campsite) {
+            getVisits().then();
+        }
+    }, [campsite]);
+
+    if (!campsite) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <>
@@ -158,8 +195,31 @@ export default function CampsiteDetails() {
                         </div>
                     </div>
                 </div>
+                <div className="row mb-5">
+                    <div className="col">
+                        <h2 className="text-center mt-4">Bezoeken</h2>
+                        <div className="d-flex mb-2">
+                            <hr className="flex-grow-1"/>
+                            <Link to="./visits/new" className="btn btn-sm btn-primary mx-2"><i
+                                className="fa-solid fa-plus"></i></Link>
+                            <hr className="flex-grow-1"/>
+                        </div>
+                        {isVisitsLoading && <div className="spinner-border mx-auto" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>}
+                        {visitsError && <div className="text-center text-body-tertiary">{visitsError}</div>}
+                        {!isVisitsLoading && !visitsError && visits.length > 0 &&
+                            <div className="row">
+                                {visits.map((visit) => (
+                                    <div className="col-12 mb-3" key={visit.id}>
+                                        <VisitCard visit={visit}/>
+                                    </div>
+                                ))}
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         </>
-
     )
 }
