@@ -200,7 +200,7 @@ export default function CampsiteDetails() {
                         <h2 className="text-center mt-4">Bezoeken</h2>
                         <div className="d-flex mb-2">
                             <hr className="flex-grow-1"/>
-                            <Link to="./visits/new" className="btn btn-sm btn-primary mx-2"><i
+                            <Link to="./visits/add" className="btn btn-sm btn-primary mx-2"><i
                                 className="fa-solid fa-plus"></i></Link>
                             <hr className="flex-grow-1"/>
                         </div>
