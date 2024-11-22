@@ -27,6 +27,7 @@ import UserRole from "./domain/enums/user-role.jsx";
 import AddVisit from "./routes/campsites/add-visit.jsx";
 import EditVisit from "./routes/visits/edit-visit.jsx";
 import {getVisitByIdLoader} from "./loaders/visit-loader.jsx";
+import VisitOverview from "./routes/visits/visit-overview.jsx";
 
 const router = createBrowserRouter([
     {
@@ -157,6 +158,10 @@ const router = createBrowserRouter([
                 path: "/visits",
                 element: <ProtectedRoute/>,
                 children: [
+                    {
+                      index: true,
+                        element: <VisitOverview/>
+                    },
                     {
                         path: ":visitId/edit",
                         element: <EditVisit/>,

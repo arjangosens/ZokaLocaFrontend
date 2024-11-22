@@ -124,7 +124,7 @@ export default function VisitForm({visit, isSubmitProcessing, onSubmit, disableB
                 <div className="card-body">
                     <div className="row">
                         <div className="col-12 col-md-6 mb-3 mb-md-0">
-                            <label>Pluspunten <small className={"text-info"}>(Eén per regel)</small></label>
+                            <label><i className="fa-solid fa-plus"></i> Pluspunten <small className={"text-info"}>(Eén per regel)</small></label>
                             <textarea
                                 className="form-control"
                                 rows="3"
@@ -134,7 +134,7 @@ export default function VisitForm({visit, isSubmitProcessing, onSubmit, disableB
                             />
                         </div>
                         <div className="col-12 col-md-6">
-                            <label>Minpunten <small className={"text-info"}>(Eén per regel)</small></label>
+                            <label><i className="fa-solid fa-minus"></i> Minpunten <small className={"text-info"}>(Eén per regel)</small></label>
                             <textarea
                                 className="form-control"
                                 rows="3"

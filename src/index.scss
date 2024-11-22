@@ -55,3 +55,9 @@ $headings-font-family: "Bitter", Georgia, serif;
 .zoom:hover {
   transform: scale(1.01);
 }
+
+.visit-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
