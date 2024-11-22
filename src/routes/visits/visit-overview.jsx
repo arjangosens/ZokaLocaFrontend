@@ -88,11 +88,11 @@ export default function VisitOverview() {
                     {visits.length > 0 && visits.map((visit) => (
                         <div className="card mb-2 zoom" key={visit.id}>
                             <div className="row g-0">
-                                <div className="col-4 flex-shrink-1">
+                                <div className="col-4 col-lg-2 flex-shrink-1">
                                     <img src="https://placehold.co/1920x1080"
                                          className="visit-image img-fluid rounded-start" alt="..."/>
                                 </div>
-                                <div className="col-8 d-flex flex-column">
+                                <div className="col-8 col-lg-10 d-flex flex-column">
                                     <div className="card-body flex-grow-1">
                                         <div className="d-flex">
                                             <h6 className="card-title flex-grow-1"><CampsiteIcon
