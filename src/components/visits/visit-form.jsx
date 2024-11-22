@@ -3,7 +3,7 @@ import {useAuth} from "../../providers/auth-provider.jsx";
 import PropTypes from "prop-types";
 import RequiredMark from "../shared/required-mark.jsx";
 
-export default function VisitForm({visit, isSubmitProcessing, onSubmit}) {
+export default function VisitForm({visit, isSubmitProcessing, onSubmit, disableBranchSelect = false}) {
     const {loggedInUser} = useAuth();
     const {register, handleSubmit, formState: {errors}, setValue, watch} = useForm({
         mode: "onBlur"
@@ -23,9 +23,9 @@ export default function VisitForm({visit, isSubmitProcessing, onSubmit}) {
                 <label>Speltak<RequiredMark/></label>
                 <select
                     className={"form-select" + (errors.branchId ? " is-invalid" : "")}
-                    {...register("branchId", {required: "Speltak is vereist"})}
+                    {...register("branchId", disableBranchSelect ? {} : {required: "Speltak is vereist"})}
                     defaultValue={visit?.branchId}
-                    disabled={isSubmitProcessing}
+                    disabled={disableBranchSelect || isSubmitProcessing}
                 >
                     {loggedInUser.branches.map(branch => (
                         <option key={branch.id} value={branch.id}>{branch.name}</option>
@@ -94,12 +94,12 @@ export default function VisitForm({visit, isSubmitProcessing, onSubmit}) {
                     <input
                         type="number"
                         placeholder={"?"}
-                        className={"form-control" + (errors.numberOfPeople ? " is-invalid" : "")}
-                        {...register("numberOfPeople", {min: {value: 1, message: "Aantal kan niet lager zijn dan 1"}})}
+                        className={"form-control" + (errors.numOfPeople ? " is-invalid" : "")}
+                        {...register("numOfPeople", {min: {value: 1, message: "Aantal kan niet lager zijn dan 1"}})}
                         defaultValue={visit?.numOfPeople}
                         disabled={isSubmitProcessing}
                     />
-                    {errors.numberOfPeople && <div className="invalid-feedback">{errors.numberOfPeople.message}</div>}
+                    {errors.numOfPeople && <div className="invalid-feedback">{errors.numOfPeople.message}</div>}
                 </div>
             </div>
 
@@ -173,5 +173,6 @@ export default function VisitForm({visit, isSubmitProcessing, onSubmit}) {
 VisitForm.propTypes = {
     visit: PropTypes.object,
     onSubmit: PropTypes.func.isRequired,
-    isSubmitProcessing: PropTypes.bool.isRequired
+    isSubmitProcessing: PropTypes.bool.isRequired,
+    disableBranchSelect: PropTypes.bool
 }

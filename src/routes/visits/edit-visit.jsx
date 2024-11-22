@@ -1,11 +1,11 @@
 import {useLoaderData, useNavigate} from "react-router-dom";
+import {useState} from "react";
 import CampsiteIcon from "../../components/campsites/campsite-icon.jsx";
 import VisitForm from "../../components/visits/visit-form.jsx";
 import {backendApi} from "../../utils/backend-api.jsx";
-import {useState} from "react";
 
-export default function AddVisit() {
-    const {campsite} = useLoaderData();
+export default function EditVisit() {
+    const {visit} = useLoaderData();
     const [errorMsg, setErrorMsg] = useState(null);
     const [isSubmitProcessing, setIsSubmitProcessing] = useState(false);
     const navigate = useNavigate();
@@ -14,17 +14,16 @@ export default function AddVisit() {
         setIsSubmitProcessing(true);
         setErrorMsg(null);
 
-        const visit = {
-            ...data,
-            campsiteId: campsite.id
-        };
+        const body = {
+            ...data
+        }
 
         try {
-            const response = await backendApi.post("/visits", visit);
+            const response = await backendApi.put(`/visits/${visit.id}`, body);
             console.log("Visit added: ", response.data);
-            navigate(`/campsites/${campsite.id}`);
+            navigate(`/campsites/${visit.campsiteId}`);
         } catch (error) {
-            console.error("Add visit failed: ", error);
+            console.error("Update visit failed: ", error);
             setErrorMsg(error.message);
         } finally {
             setIsSubmitProcessing(false);
@@ -34,11 +33,11 @@ export default function AddVisit() {
     return (
         <div className="container">
             <div className="row">
-                <h1 className="page-header-margin text-center">Bezoek toevoegen</h1>
-                <h2 className="text-center"><CampsiteIcon campsiteType={campsite.campsiteType}/> {campsite.name}</h2>
+                <h1 className="page-header-margin text-center">Bezoek Bewerken</h1>
+                <h2 className="text-center"><CampsiteIcon campsiteType={visit.campsite.campsiteType}/> {visit.campsite.name} • <i className="fa-solid fa-users-between-lines"></i> {visit.branch.name}</h2>
                 <hr/>
                 {errorMsg && <div className="alert alert-danger">{errorMsg}</div>}
-                <VisitForm isSubmitProcessing={isSubmitProcessing} onSubmit={handleSubmit}/>
+                <VisitForm visit={visit} isSubmitProcessing={isSubmitProcessing} disableBranchSelect={true} onSubmit={handleSubmit}/>
             </div>
         </div>);
 }
