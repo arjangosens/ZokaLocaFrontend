@@ -9,7 +9,7 @@ export default function VisitRatingBadge({ rating }) {
             return "primary";
         } else if (rating >= 2) {
             return "warning";
-        } else if (rating === undefined) {
+        } else if (rating === undefined || rating === null || rating === 0) {
             return "dark";
         } else {
             return "danger";
@@ -17,6 +17,6 @@ export default function VisitRatingBadge({ rating }) {
     };
 
     return (
-        <span className={`badge text-bg-${getRatingColor(rating)}`}>{rating}</span>
+        <span className={`badge text-bg-${getRatingColor(rating)}`}>{rating ? rating : "?"}</span>
     );
 }

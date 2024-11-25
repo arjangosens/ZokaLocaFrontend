@@ -7,6 +7,7 @@ import EnumUtils from "../../utils/enum-utils.jsx";
 import {useEffect, useState} from "react";
 import {backendApi} from "../../utils/backend-api.jsx";
 import VisitCard from "../../components/visits/visit-card.jsx";
+import VisitRatingBadge from "../../components/visits/visit-rating-badge.jsx";
 
 function getAddressString(address) {
     let result = "?";
@@ -197,7 +198,7 @@ export default function CampsiteDetails() {
                 </div>
                 <div className="row mb-5">
                     <div className="col">
-                        <h2 className="text-center mt-4">Bezoeken</h2>
+                        <h2 className="text-center mt-4">Bezoeken <VisitRatingBadge rating={campsite.rating} /> </h2>
                         <div className="d-flex mb-2">
                             <hr className="flex-grow-1"/>
                             <Link to="./visits/add" className="btn btn-sm btn-primary mx-2"><i
