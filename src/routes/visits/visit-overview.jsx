@@ -6,7 +6,7 @@ import CampsiteIcon from "../../components/campsites/campsite-icon.jsx";
 import VisitRatingBadge from "../../components/visits/visit-rating-badge.jsx";
 
 export default function VisitOverview() {
-    const {loggedInUser} = useAuth();
+    const {loggedInUser, refreshUserInfo} = useAuth();
     const [searchParams, setSearchParams] = useSearchParams();
     const [visits, setVisits] = useState([]);
     const [errorMsg, setErrorMsg] = useState(null);
@@ -47,12 +47,13 @@ export default function VisitOverview() {
     }
 
     useEffect(() => {
-        updateBranchId(null);
+        refreshUserInfo().then(() => {
+            updateBranchId(null);
 
-        if (selectedBranchId) {
-            getVisits(selectedBranchId).then();
-        }
-
+            if (selectedBranchId) {
+                getVisits(selectedBranchId).then();
+            }
+        });
     }, [selectedBranchId]);
 
     return (<>

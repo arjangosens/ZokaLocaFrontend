@@ -1,6 +1,5 @@
 import {createContext, useContext, useEffect, useMemo, useState} from "react";
 import PropTypes from "prop-types";
-import {jwtDecode} from "jwt-decode";
 import {backendApi} from "../utils/backend-api.jsx";
 
 const AuthContext = createContext(null);
@@ -13,22 +12,25 @@ export default function AuthProvider({children}) {
         setToken(newToken);
     }
 
+    const refreshUserInfo = async () => {
+        if (token) {
+            try {
+                const response = await backendApi.get("/my-account");
+                setLoggedInUser(response.data);
+                localStorage.setItem("loggedInUser", JSON.stringify(response.data));
+            } catch (error) {
+                console.error("Failed to fetch user info:", error);
+                setLoggedInUser(null);
+                localStorage.removeItem("loggedInUser");
+            }
+        }
+    }
+
     useEffect(() => {
         if (token) {
             backendApi.defaults.headers.common["Authorization"] = `Bearer ${token}`;
             localStorage.setItem("token", token);
-
-            // Fetch user information
-            backendApi.get("/my-account")
-                .then(response => {
-                    setLoggedInUser(response.data);
-                    localStorage.setItem("loggedInUser", JSON.stringify(response.data));
-                })
-                .catch(error => {
-                    console.error("Failed to fetch user info:", error);
-                    setLoggedInUser(null);
-                    localStorage.removeItem("loggedInUser");
-                });
+            refreshUserInfo().then();
         } else {
             delete backendApi.defaults.headers.common["Authorization"];
             localStorage.removeItem("token");
@@ -40,7 +42,8 @@ export default function AuthProvider({children}) {
     const contextValue = useMemo(() => ({
         token,
         updateToken,
-        loggedInUser: loggedInUser
+        loggedInUser,
+        refreshUserInfo
     }), [token, loggedInUser]);
 
     return (
