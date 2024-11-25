@@ -4,15 +4,22 @@ import CampsitePrice from "./campsite-price.jsx";
 import CampsiteAmenity from "./campsite-amenity.jsx";
 import CampsiteIcon from "./campsite-icon.jsx";
 import CampsitePropTypes from "../../domain/prop-types/campsite.jsx";
+import VisitRatingBadge from "../visits/visit-rating-badge.jsx";
 
 export default function CampsiteCard({campsite}) {
     return (
         <div className="card p-0">
             <div className="card-body p-0">
                 <div className="p-2">
-                    <h5 className="card-title text-truncate">
-                        <CampsiteIcon campsiteType={campsite.campsiteType}/> {campsite.name}
-                    </h5>
+                    <div className="d-flex">
+                        <h5 className="card-title text-truncate">
+                            <CampsiteIcon campsiteType={campsite.campsiteType}/> {campsite.name}
+                        </h5>
+                        <h5 className="ms-auto">
+                            <VisitRatingBadge rating={campsite.rating}/>
+                        </h5>
+                    </div>
+
                     <hr/>
                     <div className="d-flex">
                         <p className="mb-0 text-truncate"><i className="fa-solid fa-city"></i> {campsite.address.city}</p>

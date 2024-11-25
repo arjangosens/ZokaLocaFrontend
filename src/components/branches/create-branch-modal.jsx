@@ -3,6 +3,7 @@ import {useForm} from "react-hook-form";
 import {backendApi} from "../../utils/backend-api.jsx";
 import {Button, Modal} from "react-bootstrap";
 import PropTypes from "prop-types";
+import RequiredMark from "../shared/required-mark.jsx";
 
 export default function CreateBranchModal({isShown, onClose, onBranchCreated}) {
     const {register, handleSubmit, formState: {errors}} = useForm({
@@ -30,6 +31,7 @@ export default function CreateBranchModal({isShown, onClose, onBranchCreated}) {
             setLoading(false);
         }
     }
+
     return (
         <Modal show={isShown} onHide={onClose}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -43,7 +45,7 @@ export default function CreateBranchModal({isShown, onClose, onBranchCreated}) {
                     <p>
                         Vul de naam van de speltak in die je wilt aanmaken.
                     </p>
-                    <label htmlFor="name">Naam<small className="text-danger">*</small></label>
+                    <label htmlFor="name">Naam<RequiredMark /></label>
                     <input
                         id="name"
                         className={`form-control ${errors.name ? "is-invalid" : ""}`}
