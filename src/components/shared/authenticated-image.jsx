@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {backendApi} from "../../utils/backend-api.jsx";
 
-export default function AuthenticatedImage({imageId, placeholder, alt, className}) {
+export default function AuthenticatedImage({imageId, alt, placeholder = "https://placehold.co/1920x1080", className = ""}) {
     const [imageSrc, setImageSrc] = useState(placeholder);
 
     useEffect(() => {
@@ -31,9 +31,4 @@ AuthenticatedImage.propTypes = {
     placeholder: PropTypes.string,
     alt: PropTypes.string.isRequired,
     className: PropTypes.string
-};
-
-AuthenticatedImage.defaultProps = {
-    placeholder: "https://placehold.co/1920x1080",
-    className: ""
 };

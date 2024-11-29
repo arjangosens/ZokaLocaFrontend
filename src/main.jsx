@@ -28,6 +28,7 @@ import AddVisit from "./routes/campsites/add-visit.jsx";
 import EditVisit from "./routes/visits/edit-visit.jsx";
 import {getVisitByIdLoader} from "./loaders/visit-loader.jsx";
 import VisitOverview from "./routes/visits/visit-overview.jsx";
+import CampsiteAssets from "./routes/campsites/campsite-assets.jsx";
 
 const router = createBrowserRouter([
     {
@@ -95,7 +96,13 @@ const router = createBrowserRouter([
                                 path: "visits/add",
                                 element: <AddVisit/>,
                                 loader: getCampsiteByIdLoader
+                            },
+                            {
+                                path: "assets",
+                                element: <CampsiteAssets/>,
+                                loader: getCampsiteByIdLoader
                             }
+
                         ]
                     }
                 ]

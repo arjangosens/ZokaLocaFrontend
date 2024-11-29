@@ -62,6 +62,7 @@ export default function CampsiteDetails() {
             <div className="toolbar fixed-top">
                 <Link to="./edit" className=" btn btn-sm btn-dark"><i
                     className="fa-solid fa-pencil"></i></Link>
+                <Link to={"./assets"} className={"btn btn-sm btn-dark ms-2"}><i className="fa-solid fa-images"></i></Link>
             </div>
             <div className="container">
                 <div className="row">
