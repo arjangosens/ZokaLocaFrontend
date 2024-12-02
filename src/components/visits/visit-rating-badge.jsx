@@ -1,6 +1,7 @@
+import PropTypes from "prop-types";
+
 export default function VisitRatingBadge({ rating }) {
     const getRatingColor = (rating) => {
-        console.log(rating);
         if (rating >= 8) {
             return "success";
         } else if (rating >= 6) {
@@ -19,4 +20,8 @@ export default function VisitRatingBadge({ rating }) {
     return (
         <span className={`badge text-bg-${getRatingColor(rating)}`}>{rating ? rating : "?"}</span>
     );
+}
+
+VisitRatingBadge.propTypes = {
+    rating: PropTypes.number
 }
