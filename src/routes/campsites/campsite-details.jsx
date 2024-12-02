@@ -8,6 +8,7 @@ import {useEffect, useState} from "react";
 import {backendApi} from "../../utils/backend-api.jsx";
 import VisitCard from "../../components/visits/visit-card.jsx";
 import VisitRatingBadge from "../../components/visits/visit-rating-badge.jsx";
+import AuthenticatedImageCarousel from "../../components/shared/authenticated-image-carousel.jsx";
 
 function getAddressString(address) {
     let result = "?";
@@ -62,6 +63,7 @@ export default function CampsiteDetails() {
             <div className="toolbar fixed-top">
                 <Link to="./edit" className=" btn btn-sm btn-dark"><i
                     className="fa-solid fa-pencil"></i></Link>
+                <Link to={"./assets"} className={"btn btn-sm btn-dark ms-2"}><i className="fa-solid fa-images"></i></Link>
             </div>
             <div className="container">
                 <div className="row">
@@ -80,10 +82,10 @@ export default function CampsiteDetails() {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-12 col-lg-8">
-                        <img className="img-fluid" alt="campsite thumbnail" src="https://placehold.co/1920x1080"/>
-                    </div>
-                    <div className="col-12 col-lg-4">
+                    {campsite.imageIds?.length > 0 && <div className="col-12 col-lg-8">
+                        <AuthenticatedImageCarousel assetIds={campsite.imageIds} />
+                    </div>}
+                    <div className="col-12 col-lg">
                         <div className="row d-block d-lg-none mt-4">
                             <h2 className="text-center">Praktisch</h2>
                             <hr/>
