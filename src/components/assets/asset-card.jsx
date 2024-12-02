@@ -1,6 +1,7 @@
 import AuthenticatedImage from "../shared/authenticated-image.jsx";
+import PropTypes from "prop-types";
 
-export default function AssetCard({asset}) {
+export default function AssetCard({asset, onView, onEdit, onDelete}) {
     return (
         <div className="card">
             <div className="card-header d-flex py-2 px-1">
@@ -15,10 +16,17 @@ export default function AssetCard({asset}) {
                 </div>
             </div>
             <div className="card-footer d-flex py-2 px-1">
-                <button className="btn btn-sm btn-primary flex-grow-1">Bekijk</button>
-                <button className="btn btn-sm btn-outline-dark ms-2"><i className="fa-solid fa-pencil"></i></button>
-                <button className="btn btn-sm btn-outline-danger ms-2"><i className="fa-solid fa-trash"></i></button>
+                <button className="btn btn-sm btn-primary flex-grow-1" onClick={() => onView(asset)}>Bekijk</button>
+                <button className="btn btn-sm btn-outline-dark ms-2" onClick={() => onEdit(asset)}><i className="fa-solid fa-pencil"></i></button>
+                <button className="btn btn-sm btn-outline-danger ms-2" onClick={() => onDelete(asset)}><i className="fa-solid fa-trash"></i></button>
             </div>
         </div>
     );
 }
+
+AssetCard.propTypes = {
+    asset: PropTypes.object.isRequired,
+    onView: PropTypes.func,
+    onEdit: PropTypes.func,
+    onDelete: PropTypes.func
+};
