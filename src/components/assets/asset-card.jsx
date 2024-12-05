@@ -12,7 +12,7 @@ export default function AssetCard({asset, onView, onEdit, onDelete}) {
             <div className="card-body p-0">
                 <div className="asset-card-image-container">
                     <AuthenticatedImage alt={asset.name} imageId={asset.id}
-                                        placeholder="/src/assets/thumbnail-placeholder.jpg" className={"img-fluid"}/>
+                                        placeholder="/images/thumbnail-placeholder.jpg" className={"img-fluid"}/>
                 </div>
             </div>
             <div className="card-footer d-flex py-2 px-1">

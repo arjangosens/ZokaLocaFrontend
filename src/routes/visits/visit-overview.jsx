@@ -92,7 +92,7 @@ export default function VisitOverview() {
                             <div className="row g-0">
                                 <div className="col-4 col-lg-2 flex-shrink-1">
                                     <div className="visit-overview-item-image-container">
-                                        <AuthenticatedImage imageId={visit.campsite?.thumbnailId} alt={"Campsite thumbnail"} placeholder={"/src/assets/thumbnail-placeholder.jpg"} />
+                                        <AuthenticatedImage imageId={visit.campsite?.thumbnailId} alt={"Campsite thumbnail"} placeholder={"/images/thumbnail-placeholder.jpg"} />
                                     </div>
                                     {/*<img src="https://placehold.co/1920x1080"*/}
                                     {/*     className="visit-image img-fluid rounded-start" alt="..."/>*/}

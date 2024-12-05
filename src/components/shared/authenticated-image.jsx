@@ -1,8 +1,10 @@
 import {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {backendApi} from "../../utils/backend-api.jsx";
+import {useAuth} from "../../providers/auth-provider.jsx";
 
-export default function AuthenticatedImage({imageId, alt, placeholder = "https://placehold.co/1920x1080", className = ""}) {
+export default function AuthenticatedImage({imageId, alt, placeholder = "/images/thumbnail-placeholder.jpg", className = ""}) {
+    useAuth();
     const [imageSrc, setImageSrc] = useState(placeholder);
 
     useEffect(() => {
@@ -10,6 +12,9 @@ export default function AuthenticatedImage({imageId, alt, placeholder = "https:/
             if (imageId) {
                 try {
                     const response = await backendApi.get(`/assets/${imageId}/download`, {
+                        headers: {
+                            "Accept": "*/*"
+                        },
                         responseType: 'blob'
                     });
                     const objectURL = URL.createObjectURL(response.data);
