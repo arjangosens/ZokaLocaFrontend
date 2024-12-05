@@ -31,7 +31,7 @@ export default function CampsiteCard({campsite}) {
                     </div>
                 </div>
                 <div className="campsite-card-image-container">
-                    <AuthenticatedImage imageId={campsite.thumbnailId} alt="campsite thumbnail" placeholder={"/src/assets/thumbnail-placeholder.jpg"}/>
+                    <AuthenticatedImage imageId={campsite.thumbnailId} alt="campsite thumbnail" placeholder={"/images/thumbnail-placeholder.jpg"}/>
                 </div>
 
                 <div className="p-2">

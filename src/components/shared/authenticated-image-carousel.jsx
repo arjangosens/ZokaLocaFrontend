@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {useEffect, useState} from "react";
 import {backendApi} from "../../utils/backend-api.jsx";
 
-export default function AuthenticatedImageCarousel({assetIds, placeholder = "/src/assets/thumbnail-placeholder.jpg"}) {
+export default function AuthenticatedImageCarousel({assetIds, placeholder = "/images/thumbnail-placeholder.jpg"}) {
     const [assets, setAssets] = useState([]);
 
     const getAssets = async () => {

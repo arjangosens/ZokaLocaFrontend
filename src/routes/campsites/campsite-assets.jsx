@@ -1,4 +1,4 @@
-import {Link, useLoaderData} from "react-router-dom";
+import {useLoaderData} from "react-router-dom";
 import CampsiteIcon from "../../components/campsites/campsite-icon.jsx";
 import {useEffect, useState} from "react";
 import {backendApi} from "../../utils/backend-api.jsx";
