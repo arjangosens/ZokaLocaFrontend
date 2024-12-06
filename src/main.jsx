@@ -24,6 +24,11 @@ import ProtectedRoute from "./components/protected-route.jsx";
 import Login from "./routes/auth/login.jsx";
 import Logout from "./routes/auth/logout.jsx";
 import UserRole from "./domain/enums/user-role.jsx";
+import AddVisit from "./routes/campsites/add-visit.jsx";
+import EditVisit from "./routes/visits/edit-visit.jsx";
+import {getVisitByIdLoader} from "./loaders/visit-loader.jsx";
+import VisitOverview from "./routes/visits/visit-overview.jsx";
+import CampsiteAssets from "./routes/campsites/campsite-assets.jsx";
 
 const router = createBrowserRouter([
     {
@@ -86,14 +91,25 @@ const router = createBrowserRouter([
                                 path: "edit",
                                 element: <EditCampsite/>,
                                 loader: getCampsiteByIdLoader
+                            },
+                            {
+                                path: "visits/add",
+                                element: <AddVisit/>,
+                                loader: getCampsiteByIdLoader
+                            },
+                            {
+                                path: "assets",
+                                element: <CampsiteAssets/>,
+                                loader: getCampsiteByIdLoader
                             }
+
                         ]
                     }
                 ]
             },
             {
                 path: "/users",
-                element: <ProtectedRoute roles={[UserRole.ADMIN]} />,
+                element: <ProtectedRoute roles={[UserRole.ADMIN]}/>,
                 children: [
                     {
                         index: true,
@@ -144,6 +160,22 @@ const router = createBrowserRouter([
                         ]
                     }
                 ]
+            },
+            {
+                path: "/visits",
+                element: <ProtectedRoute/>,
+                children: [
+                    {
+                      index: true,
+                        element: <VisitOverview/>
+                    },
+                    {
+                        path: ":visitId/edit",
+                        element: <EditVisit/>,
+                        loader: getVisitByIdLoader
+                    }
+                ]
+
             }
         ]
     },

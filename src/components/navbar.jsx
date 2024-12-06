@@ -21,6 +21,9 @@ export default function Navbar() {
                                 <li className="nav-item">
                                     <Link to={"campsites"} className="nav-link" aria-current="page">Kamplocaties</Link>
                                 </li>
+                                <li className="nav-item">
+                                    <Link to={"visits"} className="nav-link">Bezoeken</Link>
+                                </li>
                                 {loggedInUser.role === UserRole.ADMIN && (
                                     <>
                                         <li className="nav-item">

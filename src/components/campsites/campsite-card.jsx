@@ -4,22 +4,36 @@ import CampsitePrice from "./campsite-price.jsx";
 import CampsiteAmenity from "./campsite-amenity.jsx";
 import CampsiteIcon from "./campsite-icon.jsx";
 import CampsitePropTypes from "../../domain/prop-types/campsite.jsx";
+import VisitRatingBadge from "../visits/visit-rating-badge.jsx";
+import AuthenticatedImage from "../shared/authenticated-image.jsx";
+
+const {VITE_BACKEND_API_URL} = import.meta.env;
 
 export default function CampsiteCard({campsite}) {
     return (
         <div className="card p-0">
             <div className="card-body p-0">
                 <div className="p-2">
-                    <h5 className="card-title text-truncate">
-                        <CampsiteIcon campsiteType={campsite.campsiteType}/> {campsite.name}
-                    </h5>
+                    <div className="d-flex">
+                        <h5 className="card-title text-truncate">
+                            <CampsiteIcon campsiteType={campsite.campsiteType}/> {campsite.name}
+                        </h5>
+                        <h5 className="ms-auto">
+                            <VisitRatingBadge rating={campsite.rating}/>
+                        </h5>
+                    </div>
+
                     <hr/>
                     <div className="d-flex">
-                        <p className="mb-0 text-truncate"><i className="fa-solid fa-city"></i> {campsite.address.city}</p>
+                        <p className="mb-0 text-truncate"><i className="fa-solid fa-city"></i> {campsite.address.city}
+                        </p>
                         <p className="ms-auto mb-0 text-nowrap">{campsite.address.distanceInKm} km</p>
                     </div>
                 </div>
-                <img className="img-fluid" alt="campsite thumbnail" src="https://placehold.co/1920x1080"/>
+                <div className="campsite-card-image-container">
+                    <AuthenticatedImage imageId={campsite.thumbnailId} alt="campsite thumbnail" placeholder={"/images/thumbnail-placeholder.jpg"}/>
+                </div>
+
                 <div className="p-2">
                     <div className="d-flex justify-content-between">
                         <PersonLimit limit={campsite.personLimit}/>
