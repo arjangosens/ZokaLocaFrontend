@@ -57,4 +57,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/zokaloca-frontend:${{ env.BRANCH_NAME }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/zokaloca-frontend:latest,${{ secrets.DOCKER_USERNAME }}/zokaloca-frontend:${{ env.BRANCH_NAME }}
