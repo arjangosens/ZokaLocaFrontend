@@ -1,0 +1,48 @@
+describe('Login functionality tests', () => {
+    beforeEach(() => {
+        // Clear localStorage before each test
+        cy.clearLocalStorage()
+    })
+
+    it('should forward the user to the login page when not logged in', () => {
+        // Visit the campsite overview page
+        cy.visit('/')
+
+        // Assert that the user is redirected to the login page
+        cy.url().should('include', '/auth/login')
+    });
+
+    it('should log in successfully with valid credentials', () => {
+        // Visit the login page
+        cy.visit('/auth/login')
+
+        // Enter the email
+        cy.get('[data-cy="login-email"]').type('a.gosens@student.fontys.nl')
+
+        // Enter the password
+        cy.get('[data-cy="login-password"]').type('Qwerty123!')
+
+        // Click the login button
+        cy.get('[data-cy="login-submit"]').click()
+
+        // Assert that the user is redirected to the campsite overview page
+        cy.url().should('include', '/campsites')
+    })
+
+    it('should display an error message with invalid credentials', () => {
+        // Visit the login page
+        cy.visit('/auth/login')
+
+        // Enter the email
+        cy.get('[data-cy="login-email"]').type('invalid-email@test.com')
+
+        // Enter the password
+        cy.get('[data-cy="login-password"]').type('Qwerty123!')
+
+        // Click the login button
+        cy.get('[data-cy="login-submit"]').click()
+
+        // Assert that the error message is displayed
+        cy.get('[data-cy="login-error"]').should('be.visible')
+    })
+})
