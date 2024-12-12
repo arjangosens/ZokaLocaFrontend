@@ -1,7 +1,8 @@
 describe('Login functionality tests', () => {
     beforeEach(() => {
         // Clear localStorage before each test
-        cy.clearLocalStorage()
+        cy.clearLocalStorage();
+        cy.resetDb()
     })
 
     it('should forward the user to the login page when not logged in', () => {

@@ -1,6 +1,7 @@
 describe('Logout functionality tests', () => {
     it('should log out successfully', () => {
         // Use the custom login command
+        cy.resetDb()
         cy.login('a.gosens@student.fontys.nl', 'Qwerty123!')
 
         // Assert that the user is redirected to the campsite overview page

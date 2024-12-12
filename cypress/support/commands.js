@@ -4,4 +4,8 @@ Cypress.Commands.add('login', (email, password) => {
     cy.get('[data-cy="login-password"]').should('be.visible').type(password)
     cy.get('[data-cy="login-submit"]').should('be.visible').click()
     cy.window().its('localStorage.token').should('be.a', 'string')
-})
+});
+
+Cypress.Commands.add('resetDb', () => {
+   cy.request("POST", `${Cypress.env('backendBaseUrl')}/e2e/reset`, {});
+});

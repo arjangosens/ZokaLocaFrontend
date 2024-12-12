@@ -5,6 +5,7 @@ services:
     ports:
       - "8080:8080"
     environment:
+      SPRING_PROFILES_ACTIVE: e2e
       SPRING_DATA_MONGODB_URI: mongodb://admin:password@mongo:27018
       SPRING_DATA_MONGODB_DATABASE: zokaloca
       SPRING_ASSET_STORAGE_URL: http://asset-storage:9000
