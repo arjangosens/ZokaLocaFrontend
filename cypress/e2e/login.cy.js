@@ -1,6 +1,5 @@
 describe('Login functionality tests', () => {
     beforeEach(() => {
-        // Clear localStorage before each test
         cy.clearLocalStorage();
         cy.resetDb()
     })
@@ -18,10 +17,10 @@ describe('Login functionality tests', () => {
         cy.visit('/auth/login')
 
         // Enter the email
-        cy.get('[data-cy="login-email"]').type('a.gosens@student.fontys.nl')
+        cy.get('[data-cy="login-email"]').type(Cypress.env('rootUser').email)
 
         // Enter the password
-        cy.get('[data-cy="login-password"]').type('Qwerty123!')
+        cy.get('[data-cy="login-password"]').type(Cypress.env('rootUser').password)
 
         // Click the login button
         cy.get('[data-cy="login-submit"]').click()

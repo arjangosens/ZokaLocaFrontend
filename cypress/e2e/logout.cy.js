@@ -1,8 +1,11 @@
 describe('Logout functionality tests', () => {
-    it('should log out successfully', () => {
-        // Use the custom login command
+    beforeEach(() => {
+        cy.clearLocalStorage();
         cy.resetDb()
-        cy.login('a.gosens@student.fontys.nl', 'Qwerty123!')
+    })
+    it('should log out successfully', () => {
+        // Log in
+        cy.login(Cypress.env('rootUser').email, Cypress.env('rootUser').password)
 
         // Assert that the user is redirected to the campsite overview page
         cy.url().should('include', '/campsites')

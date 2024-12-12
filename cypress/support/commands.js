@@ -9,3 +9,17 @@ Cypress.Commands.add('login', (email, password) => {
 Cypress.Commands.add('resetDb', () => {
    cy.request("POST", `${Cypress.env('backendBaseUrl')}/e2e/reset`, {});
 });
+
+Cypress.Commands.add('authRequest', (method, url, body = {}) => {
+    cy.window().then((window) => {
+        const token = window.localStorage.getItem('token');
+        cy.request({
+            method: method,
+            url: url,
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            body: body
+        });
+    });
+});

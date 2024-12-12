@@ -25,21 +25,21 @@ export default function DeleteUserModal({user, isShown, onClose, onUserDeleted})
     };
 
     return (
-        <Modal show={isShown} onHide={onClose}>
+        <Modal show={isShown} onHide={onClose} data-cy="delete-user-modal">
             <Modal.Header closeButton>
                 <Modal.Title>Gebruiker verwijderen</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div>
-                    {error && <div className="error-msg">{error}</div>}
+                    {error && <div className="error-msg" data-cy="delete-user-error">{error}</div>}
                 </div>
                 <p>Weet je zeker dat je de gebruiker <b>{`${user.firstName} ${user.lastName}`}</b> wilt verwijderen?</p>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="dark" onClick={onClose}>
+                <Button variant="dark" onClick={onClose} data-cy="delete-user-cancel">
                     Annuleren
                 </Button>
-                <Button variant="danger" onClick={handleDelete} disabled={loading}>
+                <Button variant="danger" onClick={handleDelete} disabled={loading} data-cy="delete-user-confirm">
                     {loading && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>} Verwijderen
                 </Button>
             </Modal.Footer>
