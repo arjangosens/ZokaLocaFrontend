@@ -25,18 +25,18 @@ export default function UserDetails() {
     return (
         <>
             <div className="toolbar fixed-top">
-                <Link to="./edit" className=" btn btn-sm btn-dark"><i
+                <Link to="./edit" className=" btn btn-sm btn-dark" data-cy="edit-user-button"><i
                     className="fa-solid fa-pencil"></i></Link>
                 <button className="btn btn-danger btn-sm ms-2"
-                        onClick={() => handleDeleteBtnClicked(user)}>
+                        onClick={() => handleDeleteBtnClicked(user)} data-cy="delete-user-button">
                     <i className="fa-solid fa-trash"></i></button>
             </div>
 
-            <div className="container">
+            <div className="container" data-cy="user-details-container">
                 <div className="row">
                     <div className="col text-center">
                         <div className="nav-size"></div>
-                        <h1 className="page-header-margin"><i
+                        <h1 className="page-header-margin" data-cy="user-name-header"><i
                             className="fa-solid fa-user"></i> {user.firstName} {user.lastName}</h1>
                         <hr/>
                     </div>
@@ -48,9 +48,9 @@ export default function UserDetails() {
                                 <i className="fa-solid fa-id-card"></i> Algemeen
                             </div>
                             <div className="card-body d-flex flex-column">
-                                <span><b>Naam:</b> {user.firstName} {user.lastName}</span>
-                                <span><b>E-mailadres:</b> {user.email}</span>
-                                <span><b>Rol:</b> {EnumUtils.translateUserRole(user.role)}</span>
+                                <span data-cy="user-name"><b>Naam:</b> {user.firstName} {user.lastName}</span>
+                                <span data-cy="user-email"><b>E-mailadres:</b> {user.email}</span>
+                                <span data-cy="user-role"><b>Rol:</b> {EnumUtils.translateUserRole(user.role)}</span>
                             </div>
                         </div>
                     </div>
@@ -62,10 +62,13 @@ export default function UserDetails() {
                                 <i className="fa-solid fa-users-between-lines"></i> Speltakken
                             </div>
                             <div className="card-body">
-                                {(!user.branches || user.branches.length === 0) && <span>(Geen)</span>}
-                                {user.branches && <div className="list-group">
+                                {(!user.branches || user.branches.length === 0) &&
+                                    <span data-cy="no-branches">(Geen)</span>}
+                                {user.branches && <div className="list-group" data-cy="user-branches">
                                     {user.branches.map(branch => (
-                                        <Link to={`/branches/${branch.id}`} className="list-group-item list-group-item-action" key={branch.id}>{branch.name}</Link>
+                                        <Link to={`/branches/${branch.id}`}
+                                              className="list-group-item list-group-item-action" key={branch.id}
+                                              data-cy={`branch-${branch.id}`}>{branch.name}</Link>
                                     ))}</div>}
                             </div>
                         </div>

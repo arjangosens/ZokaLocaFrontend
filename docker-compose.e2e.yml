@@ -1,0 +1,52 @@
+services:
+  backend-api:
+    hostname: backend-api
+    image: zokaloca-backend:latest
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: e2e
+      SPRING_DATA_MONGODB_URI: mongodb://admin:password@mongo:27018
+      SPRING_DATA_MONGODB_DATABASE: zokaloca
+      SPRING_ASSET_STORAGE_URL: http://asset-storage:9000
+      SPRING_ASSET_STORAGE_ACCESS_KEY: minioadmin
+      SPRING_ASSET_STORAGE_SECRET_KEY: minioadmin
+    depends_on:
+      - asset-storage
+      - mongo
+    networks:
+      - public
+
+  frontend:
+    build: .
+    ports:
+      - "80:80"
+    networks:
+      - public
+
+  asset-storage:
+    hostname: asset-storage
+    image: minio/minio
+    command: server /data
+    ports:
+      - "9000:9000"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    networks:
+      - public
+
+  mongo:
+    hostname: mongo
+    image: mongo:latest
+    ports:
+      - "27018:27018"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    command: mongod --port 27018
+    networks:
+      - public
+
+networks:
+  public:

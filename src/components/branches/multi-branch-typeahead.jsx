@@ -57,7 +57,7 @@ export default function MultiBranchTypeahead({initialSelectedBranches = [], onSe
                 disabled={disabled}
             />
 
-            {errorMsg && <div className="text-danger">{errorMsg}</div>}
+            {errorMsg && <div className="text-danger" data-cy="multi-branch-typeahead-error">{errorMsg}</div>}
         </>
     );
 }

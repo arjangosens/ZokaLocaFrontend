@@ -43,7 +43,7 @@ export default function Login() {
                         <div className="card-body bg-light">
                             <h1 className="text-center">Log in</h1>
                             <hr/>
-                            {errMsg && <div className="alert alert-danger">{errMsg}</div>}
+                            {errMsg && <div className="alert alert-danger" data-cy="login-error">{errMsg}</div>}
                             <p>Om gebruik te kunnen maken van deze applicatie dien je ingelogd te zijn. Heb je geen
                                 gebruikersaccount? Vraag er dan een aan bij een administrator.</p>
                             <form onSubmit={handleSubmit(handleLogin)}>
@@ -53,6 +53,7 @@ export default function Login() {
                                         type="text"
                                         className={"form-control" + (errors.email ? " is-invalid" : "")}
                                         id="email"
+                                        data-cy="login-email"
                                         {...register("email", {
                                             required: "Dit veld is verplicht",
                                             pattern: {
@@ -69,13 +70,14 @@ export default function Login() {
                                         type="password"
                                         className={"form-control" + (errors.password ? " is-invalid" : "")}
                                         id="password"
+                                        data-cy="login-password"
                                         {...register("password", {required: "Dit veld is verplicht"})}
                                     />
                                     {errors.password &&
                                         <div className="invalid-feedback">{errors.password.message}</div>}
                                 </div>
                                 <div className="d-grid gap-2">
-                                    <button type="submit" className="btn btn-primary" disabled={isSubmitProcessing}>
+                                    <button type="submit" className="btn btn-primary" disabled={isSubmitProcessing} data-cy="login-submit">
                                         {isSubmitProcessing &&
                                             <span className="spinner-border spinner-border-sm me-1"
                                                   role="status"></span>}
