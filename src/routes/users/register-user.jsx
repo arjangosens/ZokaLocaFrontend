@@ -4,6 +4,7 @@ import MultiBranchTypeahead from "../../components/branches/multi-branch-typeahe
 import {backendApi} from "../../utils/backend-api.jsx";
 import {useNavigate} from "react-router-dom";
 import UserRole from "../../domain/enums/user-role.jsx";
+import EnumUtils from "../../utils/enum-utils.jsx";
 
 export default function RegisterUser() {
     const navigate = useNavigate();
@@ -44,14 +45,14 @@ export default function RegisterUser() {
     const password = watch("password");
 
     return (
-        <div className="container">
+        <div className="container" data-cy="register-user-container">
             <div className="row">
                 <h1 className="page-header-margin text-center">Gebruiker registreren</h1>
                 <hr/>
-                <form onSubmit={handleSubmit(handleRegisterUser)}>
+                <form onSubmit={handleSubmit(handleRegisterUser)} data-cy="register-user-form">
 
                     {/* Error message */}
-                    {errMsg && <div className="alert alert-danger">{errMsg}</div>}
+                    {errMsg && <div className="alert alert-danger" data-cy="register-user-error">{errMsg}</div>}
 
                     {/* First and last name */}
                     <div className="row">
@@ -63,6 +64,7 @@ export default function RegisterUser() {
                                 type="text"
                                 {...register("firstName", {required: true})}
                                 disabled={isSubmitProcessing}
+                                data-cy="register-user-first-name"
                             />
                             {errors.firstName && <div className="invalid-feedback">Dit veld is vereist</div>}
                         </div>
@@ -74,6 +76,7 @@ export default function RegisterUser() {
                                 type="text"
                                 {...register("lastName", {required: true})}
                                 disabled={isSubmitProcessing}
+                                data-cy="register-user-last-name"
                             />
                             {errors.lastName && <div className="invalid-feedback">Dit veld is vereist</div>}
                         </div>
@@ -94,6 +97,7 @@ export default function RegisterUser() {
                                 }
                             })}
                             disabled={isSubmitProcessing}
+                            data-cy="register-user-email"
                         />
                         {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
                     </div>
@@ -114,6 +118,7 @@ export default function RegisterUser() {
                                     }
                                 })}
                                 disabled={isSubmitProcessing}
+                                data-cy="register-user-password"
                             />
                             {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
                         </div>
@@ -128,6 +133,7 @@ export default function RegisterUser() {
                                     validate: value => value === password || "Wachtwoorden komen niet overeen"
                                 })}
                                 disabled={isSubmitProcessing}
+                                data-cy="register-user-confirm-password"
                             />
                             {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword.message}</div>}
                         </div>
@@ -140,10 +146,12 @@ export default function RegisterUser() {
                             className={"form-select" + (errors.role ? " is-invalid" : "")}
                             {...register("role", {required: "Dit veld is vereist"})}
                             disabled={isSubmitProcessing}
+                            data-cy="register-user-role"
                         >
                             <option value="">Selecteer...</option>
-                            <option value={UserRole.VOLUNTEER}>Vrijwilliger</option>
-                            <option value={UserRole.ADMIN}>Administrator</option>
+                            {Object.values(UserRole).map(role => (
+                                <option key={role} value={role}>{EnumUtils.translateUserRole(role)}</option>
+                            ))}
                         </select>
                         {errors.role && <div className="invalid-feedback">{errors.role.message}</div>}
                     </div>
@@ -156,7 +164,7 @@ export default function RegisterUser() {
                             disabled={isSubmitProcessing}
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary" disabled={isSubmitProcessing}>
+                    <button type="submit" className="btn btn-primary" disabled={isSubmitProcessing} data-cy="register-user-submit">
                         {isSubmitProcessing &&
                             <span className="spinner-border spinner-border-sm me-1" role="status"></span>}
                         Opslaan

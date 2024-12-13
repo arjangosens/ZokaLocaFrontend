@@ -4,6 +4,7 @@ import {useState} from "react";
 import {backendApi} from "../../utils/backend-api.jsx";
 import MultiBranchTypeahead from "../../components/branches/multi-branch-typeahead.jsx";
 import UserRole from "../../domain/enums/user-role.jsx";
+import EnumUtils from "../../utils/enum-utils.jsx";
 
 export default function EditUser() {
     const {user} = useLoaderData();
@@ -43,15 +44,15 @@ export default function EditUser() {
     };
 
     return (
-        <div className="container">
+        <div className="container" data-cy="edit-user-container">
             <div className="row">
-                <h1 className="page-header-margin text-center">Gebruiker bewerken</h1>
-                <h2 className="text-center"><i className="fa-solid fa-user" /> {user.firstName} {user.lastName}</h2>
+                <h1 className="page-header-margin text-center" data-cy="edit-user-header">Gebruiker bewerken</h1>
+                <h2 className="text-center" data-cy="edit-user-subheader"><i className="fa-solid fa-user" /> {user.firstName} {user.lastName}</h2>
                 <hr/>
-                <form onSubmit={handleSubmit(handleUpdateUser)}>
+                <form onSubmit={handleSubmit(handleUpdateUser)} data-cy="edit-user-form">
 
                     {/* Error message */}
-                    {errMsg && <div className="alert alert-danger">{errMsg}</div>}
+                    {errMsg && <div className="alert alert-danger" data-cy="edit-user-error">{errMsg}</div>}
 
                     {/* Role */}
                     <div className="mb-3">
@@ -61,10 +62,12 @@ export default function EditUser() {
                             {...register("role", {required: "Dit veld is vereist"})}
                             defaultValue={user.role}
                             disabled={isSubmitProcessing}
+                            data-cy="edit-user-role"
                         >
                             <option value="">Selecteer...</option>
-                            <option value={UserRole.VOLUNTEER}>Vrijwilliger</option>
-                            <option value={UserRole.ADMIN}>Administrator</option>
+                            {Object.values(UserRole).map(role => (
+                                <option key={role} value={role}>{EnumUtils.translateUserRole(role)}</option>
+                            ))}
                         </select>
                         {errors.role && <div className="invalid-feedback">{errors.role.message}</div>}
                     </div>
@@ -78,7 +81,7 @@ export default function EditUser() {
                             disabled={isSubmitProcessing}
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary" disabled={isSubmitProcessing}>
+                    <button type="submit" className="btn btn-primary" disabled={isSubmitProcessing} data-cy="edit-user-submit">
                         {isSubmitProcessing &&
                             <span className="spinner-border spinner-border-sm me-1" role="status"></span>}
                         Opslaan
