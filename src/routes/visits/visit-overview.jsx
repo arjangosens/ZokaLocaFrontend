@@ -18,6 +18,7 @@ export default function VisitOverview() {
     const getVisits = async (branchId) => {
         setErrorMsg(null);
         setIsLoading(true);
+        setVisits([]);
         try {
             const response = await backendApi.get(`/visits/branch/${branchId}`);
             setVisits(response.data);
@@ -68,7 +69,8 @@ export default function VisitOverview() {
                         <div className="spinner-border" role="status">
                             <span className="visually-hidden">Loading...</span>
                         </div>
-                    </div>}
+                    </div>
+                    }
                     {!isLoading && visits.length === 0 && <div className="text-center">Geen bezoeken gevonden</div>}
                     {!isLoading && visits.length > 0 && visits.map((visit) => (
                         <div className="card mb-2 zoom" key={visit.id}>
