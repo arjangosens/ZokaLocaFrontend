@@ -5,6 +5,7 @@ import {backendApi} from "../../utils/backend-api.jsx";
 import CampsiteIcon from "../../components/campsites/campsite-icon.jsx";
 import VisitRatingBadge from "../../components/visits/visit-rating-badge.jsx";
 import AuthenticatedImage from "../../components/shared/authenticated-image.jsx";
+import useBranch from "../../hooks/use-branch.jsx";
 
 export default function VisitOverview() {
     const {loggedInUser, refreshUserInfo} = useAuth();
@@ -12,31 +13,12 @@ export default function VisitOverview() {
     const [visits, setVisits] = useState([]);
     const [errorMsg, setErrorMsg] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [selectedBranchId, setSelectedBranchId] = useState(null);
-
-    const updateBranchId = (id) => {
-        let branchId = id ?? searchParams.get("branchId");
-
-        if (loggedInUser.branches.length === 0) {
-            console.error("User has no branches");
-            branchId = null;
-            setErrorMsg("Je hebt geen speltakken");
-            setIsLoading(false);
-        } else if (!branchId && loggedInUser.branches.length > 0) {
-            branchId = loggedInUser.branches[0].id;
-        } else if (!loggedInUser.branches.some(branch => branch.id === branchId)) {
-            console.error("User is not in branch: ", branchId);
-            setErrorMsg("Je hebt geen toegang tot deze speltak of deze bestaat niet.");
-            branchId = null;
-            setIsLoading(false);
-        }
-
-        setSelectedBranchId(branchId);
-    };
+    const {selectedBranch, updateBranch} = useBranch();
 
     const getVisits = async (branchId) => {
         setErrorMsg(null);
         setIsLoading(true);
+        setVisits([]);
         try {
             const response = await backendApi.get(`/visits/branch/${branchId}`);
             setVisits(response.data);
@@ -49,13 +31,15 @@ export default function VisitOverview() {
 
     useEffect(() => {
         refreshUserInfo().then(() => {
-            updateBranchId(null);
-
-            if (selectedBranchId) {
-                getVisits(selectedBranchId).then();
-            }
+            updateBranch(null);
         });
-    }, [selectedBranchId]);
+    }, []);
+
+    useEffect(() => {
+        if (selectedBranch) {
+            getVisits(selectedBranch.id).then();
+        }
+    }, [selectedBranch]);
 
     return (<>
         <div className="toolbar fixed-top d-flex align-items-center">
@@ -63,10 +47,10 @@ export default function VisitOverview() {
                 {/*Branch select*/}
                 <select
                     className="form-select"
-                    value={selectedBranchId}
+                    value={selectedBranch?.id}
                     onChange={(e) => {
                         setSearchParams({branchId: e.target.value});
-                        setSelectedBranchId(e.target.value);
+                        updateBranch(e.target.value);
                     }}
                 >
                     {loggedInUser.branches.map(branch => (
@@ -83,16 +67,21 @@ export default function VisitOverview() {
                     <h1 className="text-center page-header-margin">Bezoeken</h1>
                     <hr/>
                     {errorMsg && <div className="alert alert-danger">{errorMsg}</div>}
-                    {isLoading && <div className="spinner-border" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>}
+                    {isLoading && <div className="text-center">
+                        <div className="spinner-border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    }
                     {!isLoading && visits.length === 0 && <div className="text-center">Geen bezoeken gevonden</div>}
-                    {visits.length > 0 && visits.map((visit) => (
+                    {!isLoading && visits.length > 0 && visits.map((visit) => (
                         <div className="card mb-2 zoom" key={visit.id}>
                             <div className="row g-0">
                                 <div className="col-4 col-lg-2 flex-shrink-1">
                                     <div className="visit-overview-item-image-container">
-                                        <AuthenticatedImage imageId={visit.campsite?.thumbnailId} alt={"Campsite thumbnail"} placeholder={"/images/thumbnail-placeholder.jpg"} />
+                                        <AuthenticatedImage imageId={visit.campsite?.thumbnailId}
+                                                            alt={"Campsite thumbnail"}
+                                                            placeholder={"/images/thumbnail-placeholder.jpg"}/>
                                     </div>
                                     {/*<img src="https://placehold.co/1920x1080"*/}
                                     {/*     className="visit-image img-fluid rounded-start" alt="..."/>*/}
@@ -107,7 +96,7 @@ export default function VisitOverview() {
                                         <h6 className="card-title"><i
                                             className="fa-solid fa-city"></i> {visit.campsite.address.city}</h6>
                                         <h6 className="card-title"><i
-                                            className="fa-solid fa-calendar"></i> {visit.arrivalDate} t/m {visit.departureDate}
+                                            className="fa-solid fa-calendar"></i> {new Date(visit.arrivalDate).toLocaleDateString()} t/m {new Date(visit.departureDate).toLocaleDateString()}
                                         </h6>
                                     </div>
                                 </div>

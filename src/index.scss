@@ -114,6 +114,10 @@ $headings-font-family: "Bitter", Georgia, serif;
   object-fit: cover;
 }
 
+.chat-container {
+  margin-bottom: 8rem;
+}
+
 @media (max-width: 576px) {
   .campsite-card-image-container {
     height: 8em; /* Reduced height for small screens */
