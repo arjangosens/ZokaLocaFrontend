@@ -14,7 +14,7 @@ export default function VisitCard({visit}) {
                 <div className="d-flex justify-content-between align-items-center">
                     <span><i className="fa-solid fa-euro-sign"></i> {visit.price ?? "?"}</span>
                     <span><i className="fa-solid fa-users"></i> {visit.numOfPeople ?? "?"}</span>
-                    <span><i className="fa-solid fa-calendar"></i> {visit.arrivalDate ?? "?"} - {visit.departureDate ?? "?"}</span>
+                    <span><i className="fa-solid fa-calendar"></i> {visit.arrivalDate ? new Date(visit.arrivalDate).toLocaleDateString() : "?"} t/m {visit.departureDate ? new Date(visit.departureDate).toLocaleDateString() : "?"}</span>
                 </div>
                 <hr/>
                 <h6>Plus- en minpunten</h6>

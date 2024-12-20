@@ -2,7 +2,7 @@ import {useAuth} from "../../providers/auth-provider.jsx";
 import {Link, useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {backendApi} from "../../utils/backend-api.jsx";
-import useBranchId from "../../hooks/use-branch-id.jsx";
+import useBranch from "../../hooks/use-branch.jsx";
 
 export default function ConversationOverview() {
     const {loggedInUser, refreshUserInfo} = useAuth();
@@ -10,7 +10,7 @@ export default function ConversationOverview() {
     const [conversations, setConversations] = useState([]);
     const [errorMsg, setErrorMsg] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const {selectedBranchId, updateBranchId} = useBranchId();
+    const {selectedBranch, updateBranch} = useBranch();
 
     const getConversations = async (branchId) => {
         setErrorMsg(null);
@@ -28,13 +28,15 @@ export default function ConversationOverview() {
 
     useEffect(() => {
         refreshUserInfo().then(() => {
-            updateBranchId(null);
-
-            if (selectedBranchId) {
-                getConversations(selectedBranchId).then();
-            }
+            updateBranch(null);
         });
-    }, [selectedBranchId]);
+    }, []);
+
+    useEffect(() => {
+        if (selectedBranch) {
+            getConversations(selectedBranch.id).then();
+        }
+    }, [selectedBranch]);
 
     return (<>
         <div className="toolbar fixed-top d-flex align-items-center">
@@ -42,10 +44,10 @@ export default function ConversationOverview() {
                 {/*Branch select*/}
                 <select
                     className="form-select"
-                    value={selectedBranchId}
+                    value={selectedBranch?.id}
                     onChange={(e) => {
                         setSearchParams({branchId: e.target.value});
-                        updateBranchId(e.target.value);
+                        updateBranch(e.target.value);
                     }}
                 >
                     {loggedInUser.branches.map(branch => (
