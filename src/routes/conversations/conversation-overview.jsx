@@ -3,6 +3,7 @@ import {Link, useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {backendApi} from "../../utils/backend-api.jsx";
 import useBranch from "../../hooks/use-branch.jsx";
+import CreateConversationModal from "../../components/conversations/create-conversation-modal.jsx";
 
 export default function ConversationOverview() {
     const {loggedInUser, refreshUserInfo} = useAuth();
@@ -11,6 +12,8 @@ export default function ConversationOverview() {
     const [errorMsg, setErrorMsg] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const {selectedBranch, updateBranch} = useBranch();
+    const [showCreateModal, setShowCreateModal] = useState(false);
+
 
     const getConversations = async (branchId) => {
         setErrorMsg(null);
@@ -24,6 +27,19 @@ export default function ConversationOverview() {
         } finally {
             setIsLoading(false);
         }
+    }
+
+    const handleCreateBtnClicked = () => {
+        setShowCreateModal(true);
+    }
+
+    const handleModalClosed = () => {
+        setShowCreateModal(false);
+    }
+
+    const handleConversationCreated = () => {
+        setShowCreateModal(false);
+        getConversations(selectedBranch.id).then();
     }
 
     useEffect(() => {
@@ -55,6 +71,9 @@ export default function ConversationOverview() {
                     ))}
                 </select>
             </div>
+            <button className="ms-2 btn btn-sm btn-dark" onClick={handleCreateBtnClicked}>
+                <i className="fa-solid fa-plus"></i>
+            </button>
         </div>
 
         <div className="container">
@@ -85,5 +104,7 @@ export default function ConversationOverview() {
             ))}
 
         </div>
+
+        {showCreateModal && <CreateConversationModal show={showCreateModal} initialSelectedBranch={selectedBranch} onClose={handleModalClosed} onConversationCreated={handleConversationCreated} />}
     </>);
 }
