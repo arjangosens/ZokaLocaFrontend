@@ -11,7 +11,6 @@ export default function ConversationDetails() {
     const [isLoading, setIsLoading] = useState(true);
     const [messageInput, setMessageInput] = useState('');
     const {loggedInUser} = useAuth();
-    const chatContainerRef = useRef(null);
 
     const fetchExistingMessages = async () => {
         setMessages([]);
@@ -47,12 +46,6 @@ export default function ConversationDetails() {
         };
     }, [conversation.id]);
 
-    useEffect(() => {
-        if (chatContainerRef.current) {
-            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-        }
-    }, [messages]);
-
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
@@ -73,7 +66,7 @@ export default function ConversationDetails() {
 
             <div className="container">
                 <div className="nav-size"></div>
-                <div className="chat-container" ref={chatContainerRef}>
+                <div className="chat-container">
                     {isLoading && <div className="text-center">Loading...</div>}
                     {messages.map((message) => (
                         <div key={message.id}
