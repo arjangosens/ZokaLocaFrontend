@@ -9,7 +9,7 @@ export default function AddressForm({ address }) {
     const [countries, setCountries] = useState([]);
 
     useEffect(() => {
-        axios.get("https://restcountries.com/v3.1/all")
+        axios.get("https://restcountries.com/v3.1/region/europe")
             .then(response => {
                 const countryList = response.data.map(country => ({
                     code: country.cca2,
