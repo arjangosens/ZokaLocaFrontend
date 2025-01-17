@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Link, useSearchParams} from "react-router-dom";
+import {Link, useNavigate, useSearchParams} from "react-router-dom";
 import {backendApi} from "../../utils/backend-api.jsx";
 import SortInput from "../../components/shared/sort-input.jsx";
 import FilterButton from "../../components/shared/filter-button.jsx";
@@ -19,6 +19,7 @@ export default function UserOverview() {
     const [currentPage, setCurrentPage] = useState(searchParams.get("page") || "1");
     const [filters, setFilters] = useState({});
     const {loggedInUser} = useAuth();
+    const navigate = useNavigate();
 
     const sortFields = [
         {key: "firstName", label: "Voornaam"},
@@ -32,6 +33,10 @@ export default function UserOverview() {
         newParams.set(key, value);
         setSearchParams(newParams);
     };
+
+    const navigateToDetails = (user) => {
+        navigate(`./${user.id}`);
+    }
 
     const onSortChanged = (field, order) => {
         setSortField(field);
@@ -140,48 +145,35 @@ export default function UserOverview() {
 
     return (
         <>
-            {/* Filter offcanvas */}
-            <div className="offcanvas offcanvas-start" tabIndex="-1" id="campsiteFilterOffcanvas"
-                 aria-labelledby="campsiteFilterOffcanvasLabel">
-                <div className="offcanvas-header">
-                    <h5 className="offcanvas-title" id="campsiteFilterOffcanvasLabel">Filters</h5>
-                    <button type="button" className="btn-close" data-bs-dismiss="offcanvas"
-                            aria-label="Close"></button>
-                </div>
-                <div className="offcanvas-body">
-                    <UserFilters filters={filters} onFiltersChange={onFiltersChanged}
-                                 clearAllFilters={clearAllFilters}></UserFilters>
-                </div>
-            </div>
-            <div className="toolbar fixed-top d-flex align-items-center">
+            <header className="toolbar fixed-top d-flex align-items-center" data-cy="toolbar">
                 <div className="flex-shrink-1 me-auto">
                     <SortInput
                         fields={sortFields}
                         selectedField={sortField}
                         sortOrder={sortOrder}
                         onSortChange={onSortChanged}
+                        data-cy="sort-input"
                     />
                 </div>
 
-                {/* Filter button */}
                 <div className="d-xxl-none">
-                    <FilterButton targetId="campsiteFilterOffcanvas" areFiltersActive={false}/>
+                    <FilterButton targetId="campsiteFilterOffcanvas" areFiltersActive={false} data-cy="filter-button"/>
                 </div>
 
-                <Link to="/users/register" className="ms-2 btn btn-sm btn-dark">
+                <Link to="/users/register" className="ms-2 btn btn-sm btn-dark" data-cy="register-link">
                     <i className="fa-solid fa-plus"></i>
                 </Link>
-            </div>
-            <div className="row">
-                {/* Large screen filters */}
-                <div className="d-none d-xxl-block col-xxl-2 border-end">
-                    <div className="nav-size"></div>
-                    <h2 className="page-header-margin ">Filters</h2>
-                    <UserFilters filters={filters} onFiltersChange={onFiltersChanged}
-                                 clearAllFilters={clearAllFilters}></UserFilters>
-                </div>
+            </header>
 
-                <div className="col-12 col-xxl-10 border-start">
+            <main className="row" data-cy="main-content">
+                <aside className="d-none d-xxl-block col-xxl-2 border-end" data-cy="filters-sidebar">
+                    <div className="nav-size"></div>
+                    <h2 className="page-header-margin">Filters</h2>
+                    <UserFilters filters={filters} onFiltersChange={onFiltersChanged}
+                                 clearAllFilters={clearAllFilters} data-cy="user-filters"/>
+                </aside>
+
+                <section className="col-12 col-xxl-10 border-start" data-cy="user-section">
                     <div className="row">
                         <div className="col text-center">
                             <div className="nav-size"></div>
@@ -190,52 +182,55 @@ export default function UserOverview() {
                             {totalPages > 1 && (
                                 <div className="d-flex justify-content-center">
                                     <Pagination currentPage={Number(currentPage)} totalPages={totalPages}
-                                                onPageChange={onPaginationChanged}/>
+                                                onPageChange={onPaginationChanged} data-cy="pagination"/>
                                 </div>
                             )}
                         </div>
                     </div>
                     <div className="row">
                         <div className="col">
-                            {isLoading && <div className="text-center">
+                            {isLoading && <div className="text-center" data-cy="loading-spinner">
                                 <div className="spinner-border" role="status">
                                     <span className="visually-hidden">Loading...</span>
                                 </div>
                             </div>}
-                            {error && <div className="text-center">Error: {error.message}</div>}
+                            {error && <div className="text-center" data-cy="error-message">Error: {error.message}</div>}
                             {!isLoading && !error && users.length === 0 &&
-                                <div className="text-center">Geen gebruikers gevonden</div>}
+                                <div className="text-center" data-cy="no-users-message">Geen gebruikers gevonden</div>}
 
                             {users.length > 0 && (
-                                <table className="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>Voornaam</th>
-                                        <th>Achternaam</th>
-                                        <th>E-mailadres</th>
-                                        <th>Rol</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {users.map((user) => (
-                                        <tr key={user.id}>
-                                            <td>{user.firstName}</td>
-                                            <td>{user.lastName}</td>
-                                            <td>{user.email}</td>
-                                            <td>{EnumUtils.translateUserRole(user.role)}</td>
-                                            <td>
-                                                <div className="d-flex">
-                                                    <Link to={`/users/${user.id}`}
-                                                          className="btn btn-outline-dark btn-sm">
-                                                        <i className="fa-solid fa-arrow-right"></i>
-                                                    </Link>
-                                                </div>
-                                            </td>
+                                <div className="table-responsive">
+                                    <table className="table table-hover" data-cy="user-table">
+                                        <thead>
+                                        <tr>
+                                            <th>Voornaam</th>
+                                            <th>Achternaam</th>
+                                            <th>E-mailadres</th>
+                                            <th>Rol</th>
+                                            <th></th>
                                         </tr>
-                                    ))}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                        {users.map((user) => (
+                                            <tr key={user.id} onClick={() => navigateToDetails(user)}
+                                                className="cursor-pointer" data-cy={`user-row-${user.id}`}>
+                                                <td>{user.firstName}</td>
+                                                <td>{user.lastName}</td>
+                                                <td>{user.email}</td>
+                                                <td>{EnumUtils.translateUserRole(user.role)}</td>
+                                                <td>
+                                                    <div className="d-flex">
+                                                        <Link to={`/users/${user.id}`}
+                                                              className="btn btn-outline-dark btn-sm" data-cy={`user-details-link-${user.id}`}>
+                                                            <i className="fa-solid fa-arrow-right"></i>
+                                                        </Link>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                        </tbody>
+                                    </table>
+                                </div>
                             )}
                         </div>
                     </div>
@@ -243,10 +238,23 @@ export default function UserOverview() {
                         {totalPages > 1 && (
                             <div className="d-flex justify-content-center">
                                 <Pagination currentPage={Number(currentPage)} totalPages={totalPages}
-                                            onPageChange={onPaginationChanged}/>
+                                            onPageChange={onPaginationChanged} data-cy="pagination-bottom"/>
                             </div>
                         )}
                     </div>
+                </section>
+            </main>
+
+            <div className="offcanvas offcanvas-start" tabIndex="-1" id="campsiteFilterOffcanvas"
+                 aria-labelledby="campsiteFilterOffcanvasLabel" data-cy="offcanvas">
+                <div className="offcanvas-header">
+                    <h5 className="offcanvas-title" id="campsiteFilterOffcanvasLabel">Filters</h5>
+                    <button type="button" className="btn-close" data-bs-dismiss="offcanvas"
+                            aria-label="Close" data-cy="offcanvas-close-button"></button>
+                </div>
+                <div className="offcanvas-body">
+                    <UserFilters filters={filters} onFiltersChange={onFiltersChanged}
+                                 clearAllFilters={clearAllFilters} data-cy="offcanvas-user-filters"/>
                 </div>
             </div>
         </>

@@ -29,6 +29,9 @@ import EditVisit from "./routes/visits/edit-visit.jsx";
 import {getVisitByIdLoader} from "./loaders/visit-loader.jsx";
 import VisitOverview from "./routes/visits/visit-overview.jsx";
 import CampsiteAssets from "./routes/campsites/campsite-assets.jsx";
+import ConversationOverview from "./routes/conversations/conversation-overview.jsx";
+import ConversationDetails from "./routes/conversations/conversation-details.jsx";
+import {getConversationByIdLoader} from "./loaders/conversation-loader.jsx";
 
 const router = createBrowserRouter([
     {
@@ -166,7 +169,7 @@ const router = createBrowserRouter([
                 element: <ProtectedRoute/>,
                 children: [
                     {
-                      index: true,
+                        index: true,
                         element: <VisitOverview/>
                     },
                     {
@@ -175,7 +178,26 @@ const router = createBrowserRouter([
                         loader: getVisitByIdLoader
                     }
                 ]
-
+            },
+            {
+                path: "/conversations",
+                element: <ProtectedRoute/>,
+                children: [
+                    {
+                        index: true,
+                        element: <ConversationOverview/>
+                    },
+                    {
+                        path: ":conversationId",
+                        children: [
+                            {
+                                index: true,
+                                element: <ConversationDetails/>,
+                                loader: getConversationByIdLoader
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },

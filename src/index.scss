@@ -56,6 +56,10 @@ $headings-font-family: "Bitter", Georgia, serif;
   transform: scale(1.01);
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .visit-overview-item-image-container {
   width: 100%;
   height: 8em;
@@ -108,6 +112,10 @@ $headings-font-family: "Bitter", Georgia, serif;
   width: 100%;
   height: 30em;
   object-fit: cover;
+}
+
+.chat-container {
+  margin-bottom: 8rem;
 }
 
 @media (max-width: 576px) {

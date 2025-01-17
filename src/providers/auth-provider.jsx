@@ -21,6 +21,7 @@ export default function AuthProvider({children}) {
             } catch (error) {
                 console.error("Failed to fetch user info:", error);
                 setLoggedInUser(null);
+                setToken(null);
                 localStorage.removeItem("loggedInUser");
             }
         }
